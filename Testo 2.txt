@@ -1,0 +1,3471 @@
+Iceberg code 2
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ICEBERG — Non fermarti alla superficie</title>
+<style>
+  :root {
+    --bg-carta: #f4f1ea;
+    --bg-card: #ffffff;
+    --inchiostro: #14171a;
+    --grigio: #5c6670;
+    --bordo: #14171a;
+    --azzurro-chiaro: #4ec3ff;
+    --blu-medio: #1479d6;
+    --blu-profondo: #0a2d5c;
+    --accento: #0e63b8;
+    --allerta: #b42318;
+    --ok: #067647;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-carta);
+    color: var(--inchiostro);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  .hero-header {
+    background: linear-gradient(180deg, #f8f5ee 0%, var(--bg-carta) 100%);
+    border-bottom: 2px solid var(--bordo);
+    padding: 14px 20px;
+  }
+
+  .hero-header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    min-width: 0;
+  }
+
+  .brand-logo-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    flex-shrink: 0;
+    border: 2px solid var(--bordo);
+    background: #dce8f2;
+  }
+
+  .brand-testo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .brand-nome {
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    font-size: 1.2rem;
+    line-height: 1.1;
+  }
+
+  .brand-sub {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--grigio);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .testata-nota {
+    display: none;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blu-profondo);
+    border: 1.5px solid var(--bordo);
+    background: #ffffff;
+    padding: 5px 12px;
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+
+  .barra-azioni-sub {
+    background: #faf8f3;
+    border-bottom: 1.5px solid var(--bordo);
+    padding: 11px 20px;
+  }
+
+  .barra-azioni-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .barra-ricerca-wrap,
+  .categorie-bar-wrap,
+  .stato-sync,
+  .lettore-wrap {
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (min-width: 768px) {
+    .hero-header {
+      padding: 18px 28px;
+    }
+
+    .hero-header-inner,
+    .barra-azioni-inner,
+    .barra-ricerca-wrap,
+    .categorie-bar-wrap,
+    .stato-sync,
+    .lettore-wrap {
+      max-width: 1040px;
+    }
+
+    .brand-logo-img {
+      width: 56px;
+      height: 56px;
+    }
+
+    .brand-nome {
+      font-size: 1.42rem;
+    }
+
+    .brand-sub {
+      font-size: 0.85rem;
+    }
+
+    .testata-nota {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .barra-azioni-sub {
+      padding: 13px 28px;
+    }
+
+    .barra-azioni-inner {
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .barra-azioni-gruppo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  .barra-azioni-gruppo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .barra-azioni-inner {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .barra-azioni-gruppo {
+      display: contents;
+    }
+
+    .barra-azioni-inner .btn {
+      width: 100%;
+      padding: 8px 6px;
+      font-size: 0.78rem;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .btn {
+    border: 2px solid var(--bordo);
+    background: var(--bg-card);
+    color: var(--inchiostro);
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 7px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.15s ease;
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .btn-primario {
+    background: var(--blu-profondo);
+    color: #ffffff;
+  }
+
+  .btn-secondario {
+    background: #eef5fc;
+    color: var(--blu-profondo);
+  }
+
+  .btn-pericolo {
+    background: #fef3f2;
+    color: var(--allerta);
+    border-color: var(--allerta);
+  }
+
+  .btn-approfondisci {
+    background: linear-gradient(135deg, var(--azzurro-chiaro), var(--blu-profondo));
+    color: #ffffff;
+    padding: 10px 18px;
+    font-size: 0.88rem;
+  }
+
+  .btn-piccolo {
+    padding: 5px 10px;
+    font-size: 0.76rem;
+  }
+
+  .barra-ricerca-wrap {
+    padding: 12px 16px 6px;
+  }
+
+  .ricerca-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 2px solid var(--bordo);
+    border-radius: 999px;
+    padding: 7px 14px;
+  }
+
+  .ricerca-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.92rem;
+    font-family: inherit;
+    background: transparent;
+    color: var(--inchiostro);
+  }
+
+  .categorie-bar-wrap {
+    border-bottom: 1px solid rgba(20, 23, 26, 0.18);
+  }
+
+  .categorie-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .categorie-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cat-pill {
+    border: 1.5px solid var(--bordo);
+    background: var(--bg-card);
+    color: var(--inchiostro);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .cat-pill.attiva {
+    background: var(--accento);
+    color: #ffffff;
+    border-color: var(--bordo);
+  }
+
+  .stato-sync {
+    font-size: 0.72rem;
+    color: var(--grigio);
+    padding: 4px 16px 0;
+    text-align: right;
+  }
+
+  .lettore-wrap {
+    margin-top: 14px;
+    margin-bottom: 40px;
+    padding: 0 14px;
+    touch-action: pan-y;
+  }
+
+  .banner-stanza-attiva {
+    display: none;
+    background: #e6f4ff;
+    border: 2px solid var(--bordo);
+    border-radius: 14px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 0.84rem;
+  }
+
+  .banner-stanza-attiva.visibile {
+    display: flex;
+  }
+
+  /* PIANO DI LAVORO DELLA STANZA */
+  .piano-lavoro-stanza {
+    display: none;
+    background: var(--bg-card);
+    border: 2px solid var(--bordo);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 28px rgba(10, 45, 92, 0.08);
+  }
+
+  .piano-lavoro-stanza.visibile {
+    display: block;
+  }
+
+  .piano-lavoro-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-bottom: 12px;
+    border-bottom: 1.5px solid var(--bordo);
+    margin-bottom: 14px;
+  }
+
+  .piano-lavoro-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 820px) {
+    .piano-lavoro-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .box-lavoro {
+    border: 1.5px solid var(--bordo);
+    border-radius: 14px;
+    padding: 14px;
+    background: #fcfbf8;
+  }
+
+  .box-lavoro-titolo {
+    margin: 0 0 10px;
+    font-size: 0.84rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--blu-profondo);
+  }
+
+  .lista-note-stanza {
+    max-height: 260px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .nota-item {
+    border: 1px solid rgba(20, 23, 26, 0.22);
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: #ffffff;
+    font-size: 0.84rem;
+  }
+
+  .nota-meta {
+    font-size: 0.72rem;
+    color: var(--grigio);
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .risultati-ricerca {
+    display: none;
+    background: var(--bg-card);
+    border: 2px solid var(--bordo);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(10, 45, 92, 0.08);
+  }
+
+  .risultati-ricerca.visibile {
+    display: block;
+  }
+
+  .risultati-titolo-sezione {
+    font-size: 0.82rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--blu-profondo);
+    margin: 12px 0 8px;
+  }
+
+  .risultati-titolo-sezione:first-child {
+    margin-top: 0;
+  }
+
+  .card-risultato {
+    border: 1.5px solid var(--bordo);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #faf8f3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .card-risultato-sx {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .thumb-risultato {
+    width: 64px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1.5px solid var(--bordo);
+    flex-shrink: 0;
+    background: #dce8f2;
+  }
+
+  .avatar-iniziale {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--azzurro-chiaro), var(--blu-profondo));
+    color: #ffffff;
+    border: 2px solid var(--bordo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .pagina-giornale {
+    background: var(--bg-card);
+    border: 2px solid var(--bordo);
+    border-radius: 18px;
+    box-shadow: 0 10px 28px rgba(10, 45, 92, 0.08);
+    overflow: hidden;
+    transition: transform 0.24s ease, opacity 0.24s ease;
+  }
+
+  .pagina-giornale.anim-uscita-sinistra {
+    transform: translateX(-36px) rotate(-1deg);
+    opacity: 0.25;
+  }
+
+  .pagina-giornale.anim-uscita-destra {
+    transform: translateX(36px) rotate(1deg);
+    opacity: 0.25;
+  }
+
+  .meta-articolo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 20px;
+    border-bottom: 1.5px solid var(--bordo);
+    background: #faf8f3;
+    font-size: 0.84rem;
+  }
+
+  .firma-giornale {
+    color: var(--inchiostro);
+    font-weight: 500;
+  }
+
+  .link-autore {
+    font-weight: 800;
+    color: var(--blu-profondo);
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+  }
+
+  .badge-cat {
+    background: #e6f4ff;
+    color: var(--blu-profondo);
+    border: 1.5px solid var(--bordo);
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.72rem;
+  }
+
+  .badge-stato {
+    border: 1.5px solid var(--bordo);
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    background: #f4f1ea;
+  }
+
+  .badge-stato.bozza {
+    background: #fff8e6;
+    color: #8a5300;
+  }
+
+  .badge-stato.archiviato {
+    background: #eef0f2;
+    color: var(--grigio);
+  }
+
+  .hero-img-box {
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    border-bottom: 2px solid var(--bordo);
+    background: #dce8f2;
+  }
+
+  .hero-img-box img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .corpo-articolo {
+    padding: 22px 22px 26px;
+  }
+
+  .titolo-articolo {
+    margin: 0 0 12px;
+    font-size: clamp(1.45rem, 3.2vw, 2.15rem);
+    line-height: 1.18;
+    font-weight: 900;
+    color: var(--inchiostro);
+  }
+
+  .etichetta-superficie {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--blu-profondo);
+    margin-bottom: 8px;
+  }
+
+  .testo-livello {
+    background: #fcfbf8;
+    border: 1.5px solid rgba(20, 23, 26, 0.22);
+    border-radius: 14px;
+    padding: 18px;
+    font-size: 1rem;
+    white-space: pre-line;
+  }
+
+  .azione-approfondisci-box {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .vista-approfondimento {
+    display: none;
+    background: var(--bg-card);
+    border: 2px solid var(--bordo);
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(10, 45, 92, 0.12);
+    overflow: hidden;
+  }
+
+  .vista-approfondimento.aperta {
+    display: block;
+  }
+
+  .topbar-approfondimento {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 18px;
+    background: #e6f4ff;
+    border-bottom: 2px solid var(--bordo);
+  }
+
+  .sezione-livello-interno {
+    border: 1.5px solid var(--bordo);
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 10px;
+    background: #fcfbf8;
+  }
+
+  .sezione-livello-interno.abisso {
+    background: #f3f8fc;
+    border-color: var(--blu-profondo);
+  }
+
+  .titolo-livello-interno {
+    margin: 0 0 8px;
+    font-size: 0.86rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--blu-profondo);
+  }
+
+  .nav-pagine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .contatore-pagine {
+    font-size: 0.84rem;
+    font-weight: 800;
+    color: var(--grigio);
+  }
+
+  .modale-sfondo {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 20, 35, 0.62);
+    z-index: 60;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    overflow-y: auto;
+  }
+
+  .modale-sfondo.aperto {
+    display: flex;
+  }
+
+  .modale-box {
+    width: 100%;
+    max-width: 760px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--bg-card);
+    border: 2px solid var(--bordo);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  }
+
+  .modale-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid var(--bordo);
+  }
+
+  .modale-titolo {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 900;
+  }
+
+  .switch-modalita-crea {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .switch-tre {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .btn-modo {
+    border: 2px solid var(--bordo);
+    background: #f4f1ea;
+    color: var(--inchiostro);
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+
+  .btn-modo.attivo {
+    background: var(--blu-profondo);
+    color: #ffffff;
+  }
+
+  .campo {
+    margin-bottom: 12px;
+  }
+
+  .campo label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .campo input,
+  .campo select,
+  .campo textarea {
+    width: 100%;
+    border: 1.8px solid var(--bordo);
+    border-radius: 10px;
+    padding: 9px 11px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    background: #ffffff;
+    color: var(--inchiostro);
+  }
+
+  .campo textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .dropzone {
+    border: 2px dashed var(--accento);
+    background: #f2f9ff;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    font-size: 0.84rem;
+    cursor: pointer;
+  }
+
+  .dropzone.dragover {
+    background: #d8efff;
+    border-style: solid;
+  }
+
+  .avviso-ai {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 1.5px solid var(--bordo);
+    display: none;
+  }
+
+  .avviso-ai.ok {
+    display: block;
+    background: #ecfdf3;
+    color: var(--ok);
+    border-color: var(--ok);
+  }
+
+  .avviso-ai.allerta {
+    display: block;
+    background: #fef3f2;
+    color: var(--allerta);
+    border-color: var(--allerta);
+  }
+
+  .riga-flex {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  @media (max-width: 600px) {
+    .kpi-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .switch-tre {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .kpi-box {
+    border: 1.5px solid var(--bordo);
+    border-radius: 12px;
+    padding: 10px;
+    background: #faf8f3;
+  }
+
+  .kpi-label {
+    font-size: 0.72rem;
+    color: var(--grigio);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .kpi-valore {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--blu-profondo);
+  }
+
+  .stat-card {
+    border: 1.5px solid var(--bordo);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #fcfbf8;
+  }
+
+  .finestre-letture {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 540px) {
+    .finestre-letture {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .finestra-pill {
+    border: 1px solid rgba(20, 23, 26, 0.25);
+    border-radius: 10px;
+    padding: 6px 8px;
+    background: #ffffff;
+    font-size: 0.76rem;
+  }
+
+  .finestra-pill strong {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--inchiostro);
+  }
+
+  .barra-progresso {
+    height: 7px;
+    border-radius: 999px;
+    background: #e6eef5;
+    overflow: hidden;
+    margin-top: 8px;
+    border: 1px solid rgba(20, 23, 26, 0.18);
+  }
+
+  .barra-progresso > div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--azzurro-chiaro), var(--blu-profondo));
+  }
+</style>
+</head>
+<body>
+
+<header class="hero-header">
+  <div class="hero-header-inner">
+    <div class="brand" onclick="tornaInizio()">
+      <img
+        class="brand-logo-img"
+        src="logo.jpg"
+        alt="Logo ICEBERG"
+      >
+      <div class="brand-testo">
+        <span class="brand-nome">ICEBERG</span>
+        <span class="brand-sub">non fermarti alla superficie</span>
+      </div>
+    </div>
+    <span class="testata-nota">Edizione digitale • Tre livelli di lettura</span>
+  </div>
+</header>
+
+<div class="barra-azioni-sub">
+  <div class="barra-azioni-inner">
+    <div class="barra-azioni-gruppo">
+      <button class="btn" id="btnAccountTop" onclick="apriModaleAccount('login')">Accedi</button>
+      <button class="btn btn-primario" onclick="gestisciClickCrea('articolo')">+ Crea</button>
+    </div>
+    <button class="btn" onclick="apriModaleAutore()">Area Autore</button>
+  </div>
+</div>
+
+<div class="barra-ricerca-wrap">
+  <div class="ricerca-box">
+    <span aria-hidden="true">🔍</span>
+    <input type="search" id="inputRicerca" placeholder="Cerca articoli, stanze o @utenti...">
+    <button type="button" class="btn btn-piccolo" id="btnPulisciRicerca" style="display:none;" onclick="pulisciRicerca()">✕</button>
+  </div>
+</div>
+
+<div class="categorie-bar-wrap">
+  <nav class="categorie-bar" id="barraCategorie"></nav>
+</div>
+<div class="stato-sync" id="statoSync">Connessione al database...</div>
+
+<main class="lettore-wrap">
+  <div class="banner-stanza-attiva" id="bannerStanzaAttiva">
+    <div>
+      <strong>Stanza attiva:</strong> <span id="nomeStanzaAttiva"></span>
+    </div>
+    <div class="riga-flex">
+      <button type="button" class="btn btn-piccolo btn-primario" onclick="gestisciClickCrea('articolo')">+ Articolo nella stanza</button>
+      <button type="button" class="btn btn-piccolo" onclick="esciDaStanza()">Esci dalla stanza</button>
+    </div>
+  </div>
+
+  <!-- PIANO DI LAVORO DEDICATO ALLA STANZA -->
+  <section class="piano-lavoro-stanza" id="pianoLavoroStanza" aria-label="Piano di lavoro della stanza"></section>
+
+  <section class="risultati-ricerca" id="risultatiRicerca"></section>
+
+  <article class="pagina-giornale" id="paginaGiornale">
+    <div class="meta-articolo">
+      <span class="badge-cat" id="artCategoria">VUOTO</span>
+      <span class="firma-giornale" id="artAutoreData"></span>
+    </div>
+    <div class="hero-img-box" id="boxImmagineArticolo">
+      <img id="artImmagine" src="logo.jpg" alt="Immagine articolo">
+    </div>
+    <div class="corpo-articolo">
+      <h1 class="titolo-articolo" id="artTitolo">Nessun articolo pubblicato</h1>
+      <div class="etichetta-superficie" id="etichettaLivello1" style="display:none;">Livello 1 • Superficie</div>
+      <div class="testo-livello" id="artTestoLivello">Clicca su "+ Crea" per pubblicare il primo articolo su ICEBERG.</div>
+
+      <div class="azione-approfondisci-box" id="boxAzioniArticolo" style="display:none;">
+        <button type="button" class="btn btn-approfondisci" id="btnApprofondisci" onclick="avanzaApprofondimento()">
+          Approfondisci →
+        </button>
+        <span class="contatore-pagine" id="contatorePagine">0 / 0</span>
+      </div>
+
+      <div class="nav-pagine" id="navPagineArticolo" style="display:none;">
+        <button class="btn" id="btnPrecedente" onclick="cambiaArticolo(-1)">← Pagina prec.</button>
+        <button class="btn" id="btnSuccessivo" onclick="cambiaArticolo(1)">Pagina succ. →</button>
+      </div>
+    </div>
+  </article>
+
+  <section class="vista-approfondimento" id="vistaApprofondimento" aria-label="Approfondimento articolo">
+    <div class="topbar-approfondimento">
+      <button type="button" class="btn btn-piccolo" onclick="esciDaApprofondimento()">← Torna alla pagina</button>
+      <span class="badge-cat" id="appCatBadge">LIVELLO 2</span>
+    </div>
+
+    <div class="hero-img-box">
+      <img id="appImmagine" src="logo.jpg" alt="Immagine approfondimento">
+    </div>
+
+    <div class="corpo-articolo">
+      <div class="meta-articolo" style="padding:0 0 12px; border:none; background:transparent;">
+        <span class="firma-giornale" id="appAutoreData"></span>
+      </div>
+      <h1 class="titolo-articolo" id="appTitolo"></h1>
+
+      <div class="sezione-livello-interno" id="boxLivello2">
+        <h2 class="titolo-livello-interno">Livello 2 — Immersione</h2>
+        <div id="appLivello2" style="white-space:pre-line;"></div>
+      </div>
+
+      <div class="sezione-livello-interno abisso" id="boxLivello3" style="display:none;">
+        <h2 class="titolo-livello-interno">Livello 3 — Abisso</h2>
+        <div id="appLivello3" style="white-space:pre-line;"></div>
+      </div>
+
+      <div class="azione-approfondisci-box" style="margin-top:16px;">
+        <button type="button" class="btn btn-approfondisci" id="btnAvantiLivello3" onclick="avanzaApprofondimento()">
+          Approfondisci • Livello 3 →
+        </button>
+        <button type="button" class="btn" onclick="esciDaApprofondimento()">Torna alla pagina</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODALE ACCOUNT (SUPABASE AUTH + GESTIONE PROFILO) -->
+<div class="modale-sfondo" id="modaleAccount">
+  <div class="modale-box">
+    <div class="modale-header">
+      <h2 class="modale-titolo" id="titoloModaleAccount">Account ICEBERG</h2>
+      <button class="btn btn-piccolo" onclick="chiudiModali()">Chiudi</button>
+    </div>
+
+    <div id="pannelloUtenteLoggato" style="display:none;">
+      <div class="stat-card" style="margin-bottom:14px;">
+        <div>
+          <strong id="mioUsername">@utente</strong><br>
+          <small id="miaEmail">email@esempio.it</small>
+        </div>
+        <div class="riga-flex" style="margin-top:10px;">
+          <button type="button" class="btn btn-piccolo btn-primario" onclick="apriProfiloUtente(stato.utenteCorrente.username)">Vedi profilo</button>
+          <button type="button" class="btn btn-piccolo" onclick="effettuaLogout()">Esci</button>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="inputMioUsername">Nome utente</label>
+        <input type="text" id="inputMioUsername" placeholder="nome_utente">
+      </div>
+      <div class="campo">
+        <label for="inputMiaBio">Bio del profilo</label>
+        <textarea id="inputMiaBio" placeholder="Scrivi due righe su di te e sui temi di cui scrivi..."></textarea>
+      </div>
+      <div class="campo">
+        <label for="inputNuovaPassword">Nuova password (lascia vuoto se non vuoi cambiarla)</label>
+        <input type="password" id="inputNuovaPassword" placeholder="Almeno 6 caratteri">
+      </div>
+      <div id="messaggioGestioneAccount" style="display:none; font-size:0.82rem; font-weight:700; margin-bottom:10px;"></div>
+      <div class="riga-flex" style="justify-content:flex-end;">
+        <button type="button" class="btn btn-primario" id="btnSalvaAccount" onclick="salvaImpostazioniAccount()">Salva impostazioni profilo</button>
+      </div>
+    </div>
+
+    <div id="pannelloAuthForms">
+      <div class="switch-modalita-crea">
+        <button type="button" class="btn-modo attivo" id="btnTabLogin" onclick="cambiaTabAuth('login')">Accedi</button>
+        <button type="button" class="btn-modo" id="btnTabRegister" onclick="cambiaTabAuth('register')">Crea account</button>
+      </div>
+
+      <form id="formLogin">
+        <div class="campo">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="nome@dominio.it" required>
+        </div>
+        <div class="campo">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="La tua password" required>
+        </div>
+        <div id="erroreAuth" style="display:none; color:var(--allerta); font-size:0.82rem; font-weight:700; margin-bottom:10px;"></div>
+        <div class="riga-flex" style="justify-content:flex-end;">
+          <button type="submit" class="btn btn-primario" id="btnSubmitLogin">Accedi</button>
+        </div>
+      </form>
+
+      <form id="formRegister" style="display:none;">
+        <div class="campo">
+          <label for="regUsername">Nome utente</label>
+          <input type="text" id="regUsername" placeholder="Es. pietro_iceberg" required>
+        </div>
+        <div class="campo">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" placeholder="nome@dominio.it" required>
+        </div>
+        <div class="campo">
+          <label for="regPassword">Password</label>
+          <input type="password" id="regPassword" placeholder="Almeno 6 caratteri" required>
+        </div>
+        <div class="campo">
+          <label for="regBio">Bio breve (opzionale)</label>
+          <textarea id="regBio" placeholder="Di cosa ti occupi o cosa ti appassiona..."></textarea>
+        </div>
+        <div id="erroreRegister" style="display:none; font-size:0.82rem; font-weight:700; margin-bottom:10px;"></div>
+        <div class="riga-flex" style="justify-content:flex-end;">
+          <button type="submit" class="btn btn-primario" id="btnSubmitRegister">Registrati con Supabase Auth</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODALE PROFILO UTENTE + GESTIONE ARTICOLI / BOZZE / ARCHIVIO / STATISTICHE -->
+<div class="modale-sfondo" id="modaleProfilo">
+  <div class="modale-box">
+    <div class="modale-header">
+      <h2 class="modale-titolo" id="titoloProfiloUtente">Profilo utente</h2>
+      <button class="btn btn-piccolo" onclick="chiudiModali()">Chiudi</button>
+    </div>
+    <div id="contenutoProfiloUtente"></div>
+  </div>
+</div>
+
+<!-- MODALE CREAZIONE (ARTICOLO / BOZZA / STANZA) -->
+<div class="modale-sfondo" id="modaleScrivi">
+  <div class="modale-box">
+    <div class="modale-header">
+      <h2 class="modale-titolo" id="titoloModaleCrea">Crea su ICEBERG</h2>
+      <button class="btn btn-piccolo" onclick="chiudiModali()">Chiudi</button>
+    </div>
+
+    <div class="switch-modalita-crea">
+      <button type="button" class="btn-modo attivo" id="btnModoArticolo" onclick="cambiaModalitaCrea('articolo')">Nuovo Articolo</button>
+      <button type="button" class="btn-modo" id="btnModoStanza" onclick="cambiaModalitaCrea('stanza')">Nuova Stanza</button>
+    </div>
+
+    <form id="formArticolo">
+      <input type="hidden" id="editArticoloId" value="">
+      <div class="campo">
+        <label for="inputCategoria">Categoria</label>
+        <div class="riga-flex">
+          <select id="inputCategoria"></select>
+          <button type="button" class="btn btn-piccolo" onclick="aggiungiCategoriaPrompt()">+ Categoria</button>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="inputStanzaArticolo">Stanza di progetto (opzionale)</label>
+        <select id="inputStanzaArticolo"></select>
+      </div>
+
+      <div class="campo">
+        <label for="inputAutore">A cura di (collegato al tuo account)</label>
+        <input type="text" id="inputAutore" required readonly>
+      </div>
+
+      <div class="campo">
+        <label for="inputTitolo">Titolo</label>
+        <input type="text" id="inputTitolo" placeholder="Titolo chiaro e diretto" required>
+      </div>
+
+      <div class="campo">
+        <label for="inputImmagineUrl">Immagine (URL oppure trascina/seleziona file)</label>
+        <input type="url" id="inputImmagineUrl" placeholder="https://...">
+      </div>
+
+      <div class="campo">
+        <div class="dropzone" id="dropzoneImg" onclick="document.getElementById('inputFileImg').click()">
+          Trascina qui un'immagine o tocca per sceglierla dal dispositivo
+        </div>
+        <input type="file" id="inputFileImg" accept="image/*" style="display:none">
+      </div>
+
+      <div class="campo">
+        <label for="inputLiv1">Livello 1 — Superficie (testo visibile sulla pagina iniziale)</label>
+        <textarea id="inputLiv1" required placeholder="Cosa è successo in poche righe..."></textarea>
+      </div>
+
+      <div class="campo">
+        <label for="inputLiv2">Livello 2 — Immersione (primo approfondimento)</label>
+        <textarea id="inputLiv2" required placeholder="Perché conta, dati, retroscena..."></textarea>
+      </div>
+
+      <div class="campo">
+        <label for="inputLiv3">Livello 3 — Abisso (secondo approfondimento)</label>
+        <textarea id="inputLiv3" required placeholder="Implicazioni, fonti, lettura critica..."></textarea>
+      </div>
+
+      <div class="avviso-ai" id="boxControlloAi"></div>
+      <div class="avviso-ai" id="boxControlloParole"></div>
+
+      <div class="riga-flex" style="margin-top:14px; justify-content:flex-end;">
+        <button type="button" class="btn" onclick="chiudiModali()">Annulla</button>
+        <button type="button" class="btn btn-secondario" id="btnSalvaBozza" onclick="gestisciSalvataggioArticolo('bozza')">Salva in bozza</button>
+        <button type="submit" class="btn btn-primario" id="btnPubblica">Pubblica sul giornale</button>
+      </div>
+    </form>
+
+    <form id="formStanza" style="display:none;">
+      <div class="campo">
+        <label for="inputNomeStanza">Nome della stanza (progetto comune)</label>
+        <input type="text" id="inputNomeStanza" placeholder="Es. Redazione Clima 2026" required>
+      </div>
+
+      <div class="campo">
+        <label for="inputPasswordStanza">Password per entrare nella stanza (opzionale)</label>
+        <input type="password" id="inputPasswordStanza" placeholder="Lascia vuoto per stanza senza password">
+      </div>
+
+      <div class="campo">
+        <label for="inputCreatoreStanza">Creata da (account attivo)</label>
+        <input type="text" id="inputCreatoreStanza" required readonly>
+      </div>
+
+      <div class="campo">
+        <label for="inputDescrizioneStanza">Obiettivo del progetto</label>
+        <textarea id="inputDescrizioneStanza" placeholder="Di cosa si occuperà questo spazio comune..."></textarea>
+      </div>
+
+      <div class="campo">
+        <label for="inputImmagineStanzaUrl">Immagine della stanza (URL oppure trascina/seleziona file)</label>
+        <input type="url" id="inputImmagineStanzaUrl" placeholder="https://...">
+      </div>
+
+      <div class="campo">
+        <div class="dropzone" id="dropzoneStanzaImg" onclick="document.getElementById('inputFileStanzaImg').click()">
+          Trascina qui un'immagine per la stanza o tocca per sceglierla
+        </div>
+        <input type="file" id="inputFileStanzaImg" accept="image/*" style="display:none">
+      </div>
+
+      <div id="boxControlloStanza" class="avviso-ai"></div>
+
+      <div class="riga-flex" style="margin-top:14px; justify-content:flex-end;">
+        <button type="button" class="btn" onclick="chiudiModali()">Annulla</button>
+        <button type="submit" class="btn btn-primario" id="btnCreaStanza">Crea stanza</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODALE ACCESSO STANZA CON PASSWORD -->
+<div class="modale-sfondo" id="modaleAccessoStanza">
+  <div class="modale-box">
+    <div class="modale-header">
+      <h2 class="modale-titolo" id="titoloAccessoStanza">Entra nella stanza</h2>
+      <button class="btn btn-piccolo" onclick="chiudiModali()">Chiudi</button>
+    </div>
+    <form id="formAccessoStanza">
+      <p style="font-size:0.86rem; color:var(--grigio); margin-top:0;" id="descAccessoStanza"></p>
+      <div class="campo">
+        <label for="inputPasswordAccesso">Password stanza</label>
+        <input type="password" id="inputPasswordAccesso" placeholder="Inserisci la password" required>
+      </div>
+      <div id="errorePasswordStanza" style="display:none; color:var(--allerta); font-size:0.82rem; font-weight:700; margin-bottom:10px;">
+        Password non corretta. Riprova.
+      </div>
+      <div class="riga-flex" style="justify-content:flex-end;">
+        <button type="button" class="btn" onclick="chiudiModali()">Annulla</button>
+        <button type="submit" class="btn btn-primario">Sblocca ed entra nel piano di lavoro</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODALE AREA AUTORE (DASHBOARD STATISTICHE SOLO AUTORE LOGGATO) -->
+<div class="modale-sfondo" id="modaleAutore">
+  <div class="modale-box">
+    <div class="modale-header">
+      <h2 class="modale-titolo">Area Autore — Statistiche editoriali</h2>
+      <button class="btn btn-piccolo" onclick="chiudiModali()">Chiudi</button>
+    </div>
+    <p style="font-size:0.84rem; color:var(--grigio); margin-top:0;">
+      Andamento delle letture per gli articoli pubblicati dal tuo account.
+    </p>
+    <div class="kpi-grid" id="kpiAutore"></div>
+    <div id="listaStatistiche"></div>
+  </div>
+</div>
+
+<script>
+// ======================================================
+// 1. CONFIGURAZIONE SUPABASE, FILTRO PAROLE E CATEGORIE
+// ======================================================
+const SUPABASE_CONFIG = {
+  url: 'https://ydwuxstbxuypzajgojeb.supabase.co',
+  publishableKey: 'sb_publishable_bmbIIckRpsYQ1cBfwrmpfg_8RTrlf8v',
+  cacheArticoli: 'iceberg_cache_articoli_auth_v5',
+  cacheCategorie: 'iceberg_cache_categorie_auth_v5',
+  cacheStanze: 'iceberg_cache_stanze_auth_v5',
+  cacheUtenti: 'iceberg_cache_utenti_auth_v5',
+  sessioneAuth: 'iceberg_sessione_auth_v5',
+  cacheStanzeSbloccate: 'iceberg_stanze_sbloccate_auth_v5'
+};
+
+const CATEGORIE_BASE = ['TUTTI', 'CRONACA', 'SCIENZA', 'ECONOMIA'];
+const IMMAGINE_DEFAULT = 'logo.jpg';
+
+const ARTICOLI_INIZIALI = [];
+const UTENTI_INIZIALI = [];
+
+const PAROLE_VIETATE_RADICI = [
+  'negro', 'negra', 'negri', 'negre',
+  'frocio', 'froci', 'frocia', 'froce',
+  'finocchio', 'finocchi', 'ricchione', 'ricchioni',
+  'puttana', 'puttane', 'troia', 'troie', 'zoccola', 'zoccole',
+  'coglione', 'coglioni', 'stronzo', 'stronzi', 'stronza', 'stronzate',
+  'bastardo', 'bastardi', 'bastarda', 'merda', 'merde',
+  'ritardato', 'ritardata', 'handicappato', 'handicappata',
+  'mongoloide', 'nazi', 'nazista', 'fascista', 'razzista', 'terrorista'
+];
+
+function normalizzaPerControllo(testo) {
+  return String(testo || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/0/g, 'o')
+    .replace(/1/g, 'i')
+    .replace(/3/g, 'e')
+    .replace(/4/g, 'a')
+    .replace(/@/g, 'a')
+    .replace(/\$/g, 's')
+    .replace(/[^a-z0-9\s]+/g, ' ');
+}
+
+function trovaParoleVietate(testo) {
+  const pulito = normalizzaPerControllo(testo);
+  if (!pulito.trim()) return [];
+  const token = pulito.split(/\s+/).filter(Boolean);
+  const trovate = new Set();
+
+  PAROLE_VIETATE_RADICI.forEach(parola => {
+    const pNorm = normalizzaPerControllo(parola);
+    if (token.some(t => t === pNorm || (t.length >= pNorm.length && t.startsWith(pNorm)))) {
+      trovate.add(parola);
+    }
+  });
+
+  return Array.from(trovate);
+}
+
+let accessTokenCorrente = null;
+
+function headersSupabase(usaTokenUtente = true) {
+  const bearer = (usaTokenUtente && accessTokenCorrente) ? accessTokenCorrente : SUPABASE_CONFIG.publishableKey;
+  return {
+    'apikey': SUPABASE_CONFIG.publishableKey,
+    'Authorization': 'Bearer ' + bearer,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
+}
+
+function normalizzaStatoArticolo(rawStato) {
+  const s = String(rawStato || 'pubblicato').trim().toLowerCase();
+  if (s === 'bozza' || s === 'draft') return 'bozza';
+  if (s === 'archiviato' || s === 'archived') return 'archiviato';
+  return 'pubblicato';
+}
+
+function normalizzaArticolo(a) {
+  const totale = Number(a.letture) || 0;
+  const oggi = a.letture_oggi !== undefined ? Number(a.letture_oggi) : totale;
+  const setteGg = a.letture_7g !== undefined ? Number(a.letture_7g) : totale;
+  const trentaGg = a.letture_30g !== undefined ? Number(a.letture_30g) : totale;
+  const username = a.autore_username || String(a.autore || 'autore').toLowerCase().replace(/[^a-z0-9_]+/g, '_');
+  const catRaw = String(a.categoria || 'CRONACA').trim().toUpperCase();
+  const categoria = catRaw === 'CULTURA' ? 'CRONACA' : catRaw;
+  return {
+    ...a,
+    categoria,
+    stato_articolo: normalizzaStatoArticolo(a.stato_articolo || a.stato),
+    autore_username: username,
+    letture: totale,
+    letture_oggi: oggi,
+    letture_7g: setteGg,
+    letture_30g: trentaGg
+  };
+}
+
+function filtraCategorieSenzaCultura(lista) {
+  const pulite = (lista || [])
+    .map(c => String(c || '').trim().toUpperCase())
+    .filter(c => c && c !== 'CULTURA');
+  return Array.from(new Set([...CATEGORIE_BASE, ...pulite]));
+}
+
+function salvaCacheLocale(articoli, categorie, stanze, utenti) {
+  try {
+    if (articoli) localStorage.setItem(SUPABASE_CONFIG.cacheArticoli, JSON.stringify(articoli));
+    if (categorie) localStorage.setItem(SUPABASE_CONFIG.cacheCategorie, JSON.stringify(filtraCategorieSenzaCultura(categorie)));
+    if (stanze) localStorage.setItem(SUPABASE_CONFIG.cacheStanze, JSON.stringify(stanze));
+    if (utenti) localStorage.setItem(SUPABASE_CONFIG.cacheUtenti, JSON.stringify(utenti));
+  } catch (e) {}
+}
+
+function leggiCacheLocale() {
+  try {
+    const artRaw = JSON.parse(localStorage.getItem(SUPABASE_CONFIG.cacheArticoli) || 'null');
+    const catRaw = JSON.parse(localStorage.getItem(SUPABASE_CONFIG.cacheCategorie) || '[]');
+    const stanze = JSON.parse(localStorage.getItem(SUPABASE_CONFIG.cacheStanze) || '[]');
+    const utentiRaw = JSON.parse(localStorage.getItem(SUPABASE_CONFIG.cacheUtenti) || 'null');
+    const sessioneAuth = JSON.parse(localStorage.getItem(SUPABASE_CONFIG.sessioneAuth) || 'null');
+    const sbloccate = JSON.parse(localStorage.getItem(SUPABASE_CONFIG.cacheStanzeSbloccate) || '[]');
+    return {
+      art: Array.isArray(artRaw) ? artRaw.map(normalizzaArticolo) : ARTICOLI_INIZIALI,
+      cat: filtraCategorieSenzaCultura(catRaw),
+      stanze,
+      utenti: Array.isArray(utentiRaw) ? utentiRaw : UTENTI_INIZIALI,
+      sessioneAuth,
+      sbloccate
+    };
+  } catch (e) {
+    return { art: ARTICOLI_INIZIALI, cat: [...CATEGORIE_BASE], stanze: [], utenti: UTENTI_INIZIALI, sessioneAuth: null, sbloccate: [] };
+  }
+}
+
+function salvaSessioneAuth(sessione) {
+  try {
+    if (sessione) {
+      localStorage.setItem(SUPABASE_CONFIG.sessioneAuth, JSON.stringify(sessione));
+    } else {
+      localStorage.removeItem(SUPABASE_CONFIG.sessioneAuth);
+    }
+  } catch (e) {}
+}
+
+function salvaStanzeSbloccate(listaNomi) {
+  try {
+    localStorage.setItem(SUPABASE_CONFIG.cacheStanzeSbloccate, JSON.stringify(Array.from(new Set(listaNomi))));
+  } catch (e) {}
+}
+
+function pulisciUsername(rawUsername, fallbackEmail = '') {
+  const base = rawUsername || (fallbackEmail ? fallbackEmail.split('@')[0] : 'autore');
+  const clean = String(base).trim().toLowerCase().replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '');
+  return clean.length >= 2 ? clean : 'autore_iceberg';
+}
+
+const BackendSupabase = {
+  async caricaTutto() {
+    const cache = leggiCacheLocale();
+    try {
+      const [resArt, resCat, resStanze, resUtenti] = await Promise.all([
+        fetch(`${SUPABASE_CONFIG.url}/rest/v1/articoli?select=*&order=created_at.desc,id.desc`, {
+          headers: headersSupabase(false)
+        }),
+        fetch(`${SUPABASE_CONFIG.url}/rest/v1/categorie?select=nome&order=nome.asc`, {
+          headers: headersSupabase(false)
+        }),
+        fetch(`${SUPABASE_CONFIG.url}/rest/v1/stanze?select=*&order=created_at.desc,id.desc`, {
+          headers: headersSupabase(false)
+        }),
+        fetch(`${SUPABASE_CONFIG.url}/rest/v1/utenti?select=username,bio`, {
+          headers: headersSupabase(false)
+        })
+      ]);
+
+      if (!resArt.ok) throw new Error('Errore HTTP articoli ' + resArt.status);
+
+      const datiArt = await resArt.json();
+      const datiCat = resCat.ok ? await resCat.json() : [];
+      const datiStanze = resStanze.ok ? await resStanze.json() : [];
+      const datiUtenti = resUtenti.ok ? await resUtenti.json() : [];
+
+      const articoli = Array.isArray(datiArt) ? datiArt.map(normalizzaArticolo) : (cache.art || []);
+      const catDb = Array.isArray(datiCat) ? datiCat.map(c => c.nome) : [];
+      const categorie = filtraCategorieSenzaCultura([...(cache.cat || []), ...catDb]);
+      const stanze = Array.isArray(datiStanze) ? datiStanze : (cache.stanze || []);
+      const utenti = Array.isArray(datiUtenti) ? datiUtenti : (cache.utenti || []);
+
+      salvaCacheLocale(articoli, categorie, stanze, utenti);
+      return { articoli, categorie, stanze, utenti, stato: 'Sincronizzato con Supabase' };
+    } catch (err) {
+      const articoli = cache.art || [];
+      const categorie = filtraCategorieSenzaCultura(cache.cat || []);
+      const stanze = cache.stanze || [];
+      return { articoli, categorie, stanze, utenti: cache.utenti || [], stato: 'Modalità locale (verifica tabelle/rete Supabase)' };
+    }
+  },
+
+  async caricaMessaggiStanza(nomeStanza) {
+    if (!nomeStanza) return [];
+    try {
+      const res = await fetch(
+        `${SUPABASE_CONFIG.url}/rest/v1/stanza_messaggi?stanza_nome=eq.${encodeURIComponent(nomeStanza)}&select=*&order=created_at.desc,id.desc`,
+        { headers: headersSupabase(false) }
+      );
+      if (!res.ok) return [];
+      const dati = await res.json();
+      return Array.isArray(dati) ? dati : [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  async inviaMessaggioStanza({ stanza_nome, autore_username, testo }) {
+    const payload = {
+      stanza_nome: String(stanza_nome || '').trim(),
+      autore_username: pulisciUsername(autore_username),
+      testo: String(testo || '').trim()
+    };
+    try {
+      const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/stanza_messaggi`, {
+        method: 'POST',
+        headers: headersSupabase(true),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('Errore salvataggio nota ' + res.status);
+      const creati = await res.json();
+      return { ok: true, messaggio: Array.isArray(creati) && creati[0] ? creati[0] : { ...payload, id: Date.now(), created_at: new Date().toISOString() } };
+    } catch (e) {
+      return { ok: false, errore: e.message || 'Impossibile inviare la nota su Supabase.' };
+    }
+  },
+
+  async registraConAuth({ username, email, password, bio }) {
+    const cleanUser = pulisciUsername(username, email);
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    const cleanBio = (bio || 'Autore e lettore su ICEBERG').trim();
+
+    const res = await fetch(`${SUPABASE_CONFIG.url}/auth/v1/signup`, {
+      method: 'POST',
+      headers: headersSupabase(false),
+      body: JSON.stringify({
+        email: cleanEmail,
+        password,
+        data: {
+          username: cleanUser,
+          bio: cleanBio
+        }
+      })
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      return {
+        ok: false,
+        errore: data.msg || data.error_description || data.message || 'Errore durante la registrazione su Supabase Auth.'
+      };
+    }
+
+    const sessione = data.session || (data.access_token ? data : null);
+    const userObj = data.user || (sessione && sessione.user) || null;
+    const authId = userObj && userObj.id ? userObj.id : null;
+
+    if (sessione && sessione.access_token) {
+      accessTokenCorrente = sessione.access_token;
+      salvaSessioneAuth(sessione);
+    }
+
+    await this.upsertProfiloPubblico({ id: authId, username: cleanUser, bio: cleanBio });
+
+    return {
+      ok: true,
+      richiedeConfermaEmail: !sessione,
+      utente: {
+        id: authId,
+        username: cleanUser,
+        email: cleanEmail,
+        bio: cleanBio
+      }
+    };
+  },
+
+  async loginConAuth({ email, password }) {
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    const res = await fetch(`${SUPABASE_CONFIG.url}/auth/v1/token?grant_type=password`, {
+      method: 'POST',
+      headers: headersSupabase(false),
+      body: JSON.stringify({
+        email: cleanEmail,
+        password
+      })
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.access_token) {
+      return {
+        ok: false,
+        errore: data.msg || data.error_description || data.message || 'Email o password non validi.'
+      };
+    }
+
+    accessTokenCorrente = data.access_token;
+    salvaSessioneAuth(data);
+
+    const userObj = data.user || {};
+    const meta = userObj.user_metadata || {};
+    const username = pulisciUsername(meta.username, userObj.email || cleanEmail);
+    const bio = meta.bio || 'Autore e lettore su ICEBERG';
+
+    await this.upsertProfiloPubblico({ id: userObj.id, username, bio });
+
+    return {
+      ok: true,
+      utente: {
+        id: userObj.id,
+        username,
+        email: userObj.email || cleanEmail,
+        bio
+      }
+    };
+  },
+
+  async aggiornaUtenteAuth({ username, bio, password }) {
+    if (!accessTokenCorrente) {
+      return { ok: true, soloLocale: true };
+    }
+    const bodyPayload = {
+      data: {
+        username,
+        bio
+      }
+    };
+    if (password && password.length >= 6) {
+      bodyPayload.password = password;
+    }
+
+    try {
+      const res = await fetch(`${SUPABASE_CONFIG.url}/auth/v1/user`, {
+        method: 'PUT',
+        headers: headersSupabase(true),
+        body: JSON.stringify(bodyPayload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        return {
+          ok: false,
+          errore: data.msg || data.error_description || data.message || 'Impossibile aggiornare i dati auth su Supabase.'
+        };
+      }
+      const cache = leggiCacheLocale();
+      if (cache.sessioneAuth) {
+        cache.sessioneAuth.user = {
+          ...(cache.sessioneAuth.user || {}),
+          user_metadata: {
+            ...((cache.sessioneAuth.user && cache.sessioneAuth.user.user_metadata) || {}),
+            username,
+            bio
+          }
+        };
+        salvaSessioneAuth(cache.sessioneAuth);
+      }
+      return { ok: true };
+    } catch (e) {
+      return { ok: true, soloLocale: true };
+    }
+  },
+
+  async logoutConAuth() {
+    if (accessTokenCorrente) {
+      try {
+        await fetch(`${SUPABASE_CONFIG.url}/auth/v1/logout`, {
+          method: 'POST',
+          headers: headersSupabase(true)
+        });
+      } catch (e) {}
+    }
+    accessTokenCorrente = null;
+    salvaSessioneAuth(null);
+  },
+
+  async upsertProfiloPubblico({ id, username, bio }) {
+    if (!username) return;
+    const payload = {
+      username,
+      bio: bio || ''
+    };
+    if (id) payload.id = id;
+
+    try {
+      await fetch(`${SUPABASE_CONFIG.url}/rest/v1/utenti?on_conflict=username`, {
+        method: 'POST',
+        headers: {
+          ...headersSupabase(true),
+          'Prefer': 'resolution=merge-duplicates,return=representation'
+        },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {}
+  },
+
+  async aggiornaProfiloTabella(vecchioUsername, nuovoUsername, bio) {
+    try {
+      await fetch(`${SUPABASE_CONFIG.url}/rest/v1/utenti?username=eq.${encodeURIComponent(vecchioUsername)}`, {
+        method: 'PATCH',
+        headers: headersSupabase(true),
+        body: JSON.stringify({ username: nuovoUsername, bio })
+      });
+    } catch (e) {}
+  },
+
+  async creaArticolo(nuovo) {
+    const statoArt = normalizzaStatoArticolo(nuovo.stato_articolo);
+    const payload = normalizzaArticolo({
+      categoria: String(nuovo.categoria || 'CRONACA').trim().toUpperCase(),
+      stanza_nome: nuovo.stanza_nome || '',
+      autore: (nuovo.autore || 'Autore').trim(),
+      autore_username: nuovo.autore_username || 'autore',
+      data: nuovo.data || new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }),
+      immagine: nuovo.immagine,
+      titolo: nuovo.titolo.trim(),
+      livello1: nuovo.livello1.trim(),
+      livello2: nuovo.livello2.trim(),
+      livello3: nuovo.livello3.trim(),
+      stato_articolo: statoArt,
+      letture: statoArt === 'pubblicato' ? 1 : 0,
+      letture_oggi: statoArt === 'pubblicato' ? 1 : 0,
+      letture_7g: statoArt === 'pubblicato' ? 1 : 0,
+      letture_30g: statoArt === 'pubblicato' ? 1 : 0
+    });
+
+    try {
+      const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/articoli`, {
+        method: 'POST',
+        headers: headersSupabase(true),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('Errore salvataggio ' + res.status);
+      const creati = await res.json();
+      return Array.isArray(creati) && creati[0] ? normalizzaArticolo(creati[0]) : { ...payload, id: Date.now() };
+    } catch (err) {
+      return { ...payload, id: Date.now() };
+    }
+  },
+
+  async aggiornaArticolo(id, modifiche) {
+    const payload = { ...modifiche };
+    if (payload.stato_articolo) {
+      payload.stato_articolo = normalizzaStatoArticolo(payload.stato_articolo);
+    }
+    if (typeof id === 'number' || /^\d+$/.test(String(id))) {
+      try {
+        const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/articoli?id=eq.${encodeURIComponent(id)}`, {
+          method: 'PATCH',
+          headers: headersSupabase(true),
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          const aggiornati = await res.json();
+          if (Array.isArray(aggiornati) && aggiornati[0]) {
+            return normalizzaArticolo(aggiornati[0]);
+          }
+        }
+      } catch (e) {}
+    }
+    return null;
+  },
+
+  async eliminaArticolo(id) {
+    if (typeof id === 'number' || /^\d+$/.test(String(id))) {
+      try {
+        await fetch(`${SUPABASE_CONFIG.url}/rest/v1/articoli?id=eq.${encodeURIComponent(id)}`, {
+          method: 'DELETE',
+          headers: headersSupabase(true)
+        });
+      } catch (e) {}
+    }
+  },
+
+  async creaStanza(nuova) {
+    const payload = {
+      nome: nuova.nome.trim(),
+      password_stanza: nuova.password_stanza || '',
+      immagine: nuova.immagine || IMMAGINE_DEFAULT,
+      descrizione: (nuova.descrizione || '').trim(),
+      creata_da: (nuova.creata_da || 'Autore').trim()
+    };
+
+    try {
+      const res = await fetch(`${SUPABASE_CONFIG.url}/rest/v1/stanze`, {
+        method: 'POST',
+        headers: headersSupabase(true),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('Errore salvataggio stanza ' + res.status);
+      const creati = await res.json();
+      return Array.isArray(creati) && creati[0] ? creati[0] : { ...payload, id: Date.now() };
+    } catch (err) {
+      return { ...payload, id: Date.now() };
+    }
+  },
+
+  async creaCategoria(nome) {
+    const pulita = String(nome || '').trim().toUpperCase();
+    if (!pulita || pulita === 'CULTURA') return;
+    try {
+      await fetch(`${SUPABASE_CONFIG.url}/rest/v1/categorie`, {
+        method: 'POST',
+        headers: {
+          ...headersSupabase(true),
+          'Prefer': 'resolution=ignore-duplicates,return=representation'
+        },
+        body: JSON.stringify({ nome: pulita })
+      });
+    } catch (e) {}
+  },
+
+  async incrementaLettura(articolo) {
+    if (!articolo || normalizzaStatoArticolo(articolo.stato_articolo) !== 'pubblicato') return;
+    const norm = normalizzaArticolo(articolo);
+    norm.letture += 1;
+    norm.letture_oggi += 1;
+    norm.letture_7g += 1;
+    norm.letture_30g += 1;
+
+    articolo.letture = norm.letture;
+    articolo.letture_oggi = norm.letture_oggi;
+    articolo.letture_7g = norm.letture_7g;
+    articolo.letture_30g = norm.letture_30g;
+
+    if (typeof articolo.id === 'number') {
+      try {
+        await fetch(`${SUPABASE_CONFIG.url}/rest/v1/articoli?id=eq.${encodeURIComponent(articolo.id)}`, {
+          method: 'PATCH',
+          headers: headersSupabase(false),
+          body: JSON.stringify({
+            letture: norm.letture,
+            letture_oggi: norm.letture_oggi,
+            letture_7g: norm.letture_7g,
+            letture_30g: norm.letture_30g
+          })
+        });
+      } catch (e) {}
+    }
+  }
+};
+
+// ======================================================
+// 2. STATO INTERFACCIA GIORNALE, APPROFONDIMENTO E STANZE
+// ======================================================
+const cacheAvvio = leggiCacheLocale();
+let utenteIniziale = null;
+if (cacheAvvio.sessioneAuth && cacheAvvio.sessioneAuth.access_token && cacheAvvio.sessioneAuth.user) {
+  accessTokenCorrente = cacheAvvio.sessioneAuth.access_token;
+  const u = cacheAvvio.sessioneAuth.user;
+  const meta = u.user_metadata || {};
+  utenteIniziale = {
+    id: u.id,
+    username: pulisciUsername(meta.username, u.email || ''),
+    email: u.email || '',
+    bio: meta.bio || 'Autore e lettore su ICEBERG'
+  };
+}
+
+let stato = {
+  articoli: [],
+  categorie: filtraCategorieSenzaCultura(cacheAvvio.cat),
+  stanze: [],
+  utenti: cacheAvvio.utenti || UTENTI_INIZIALI,
+  utenteCorrente: utenteIniziale,
+  azioneDopoLogin: null,
+  stanzeSbloccate: cacheAvvio.sbloccate || [],
+  stanzaAttiva: '',
+  messaggiStanza: [],
+  stanzaInAccesso: null,
+  categoriaAttiva: 'TUTTI',
+  queryRicerca: '',
+  indiceArticolo: 0,
+  stepApprofondimento: 1,
+  immagineArticoloDataUrl: '',
+  immagineStanzaDataUrl: '',
+  profiloVisualizzato: '',
+  schedaProfilo: 'pubblicati'
+};
+
+function formattaFirmaAcuraDi(art) {
+  const userAutore = art.autore_username || String(art.autore || 'autore').toLowerCase().replace(/[^a-z0-9_]+/g, '_');
+  const nomeVisibile = art.autore || userAutore;
+  const dataStr = art.data ? ` • ${escapeHtml(art.data)}` : '';
+  return `A cura di <button type="button" class="link-autore" onclick="apriProfiloUtente('${escapeHtml(userAutore)}')">${escapeHtml(nomeVisibile)}</button>${dataStr}`;
+}
+
+function aggiornaBottoneAccount() {
+  const btn = document.getElementById('btnAccountTop');
+  if (stato.utenteCorrente) {
+    btn.textContent = `@${stato.utenteCorrente.username}`;
+  } else {
+    btn.textContent = 'Accedi';
+  }
+}
+
+function articoliFiltrati() {
+  const catAttiva = String(stato.categoriaAttiva || 'TUTTI').trim().toUpperCase();
+  const stanzaAttiva = String(stato.stanzaAttiva || '').trim().toLowerCase();
+
+  return stato.articoli.filter(a => {
+    const isPubblicato = normalizzaStatoArticolo(a.stato_articolo) === 'pubblicato';
+    if (!isPubblicato) return false;
+    const catArt = String(a.categoria || '').trim().toUpperCase();
+    const stanzaArt = String(a.stanza_nome || '').trim().toLowerCase();
+    const okCategoria = catAttiva === 'TUTTI' || catArt === catAttiva;
+    const okStanza = stanzaAttiva ? stanzaArt === stanzaAttiva : !stanzaArt;
+    return okCategoria && okStanza;
+  });
+}
+
+function articoliDellaStanza(nomeStanza) {
+  const target = String(nomeStanza || '').trim().toLowerCase();
+  if (!target) return [];
+  return stato.articoli
+    .map(normalizzaArticolo)
+    .filter(a => String(a.stanza_nome || '').trim().toLowerCase() === target);
+}
+
+function aggiornaBannerStanza() {
+  const banner = document.getElementById('bannerStanzaAttiva');
+  const label = document.getElementById('nomeStanzaAttiva');
+  if (stato.stanzaAttiva) {
+    label.textContent = stato.stanzaAttiva;
+    banner.classList.add('visibile');
+  } else {
+    banner.classList.remove('visibile');
+  }
+}
+
+function renderPianoLavoroStanza() {
+  const box = document.getElementById('pianoLavoroStanza');
+  if (!stato.stanzaAttiva) {
+    box.classList.remove('visibile');
+    box.innerHTML = '';
+    return;
+  }
+
+  const stanzaObj = stato.stanze.find(s => String(s.nome || '').toLowerCase() === stato.stanzaAttiva.toLowerCase()) || {
+    nome: stato.stanzaAttiva,
+    descrizione: 'Spazio di lavoro condiviso per articoli e note della stanza.',
+    creata_da: ''
+  };
+
+  const artsStanza = articoliDellaStanza(stanzaObj.nome);
+  const pubblicatiStanza = artsStanza.filter(a => a.stato_articolo === 'pubblicato');
+
+  const articoliHtml = artsStanza.length ? artsStanza.map(a => {
+    const badgeStato = a.stato_articolo === 'bozza'
+      ? '<span class="badge-stato bozza">Bozza</span>'
+      : (a.stato_articolo === 'archiviato'
+          ? '<span class="badge-stato archiviato">Archiviato</span>'
+          : '<span class="badge-cat">Pubblicato</span>');
+
+    const bottoneApri = a.stato_articolo === 'pubblicato'
+      ? `<button type="button" class="btn btn-piccolo" onclick="selezionaArticoloInLettore('${escapeHtml(a.id)}')">Leggi</button>`
+      : '';
+
+    const bottoneStato = stato.utenteCorrente
+      ? (a.stato_articolo === 'pubblicato'
+          ? `<button type="button" class="btn btn-piccolo" onclick="cambiaStatoArticolo('${escapeHtml(a.id)}', 'bozza')">Metti in bozza</button>`
+          : `<button type="button" class="btn btn-piccolo btn-primario" onclick="cambiaStatoArticolo('${escapeHtml(a.id)}', 'pubblicato')">Pubblica</button>`)
+      : '';
+
+    return `
+      <div class="card-risultato" style="margin-bottom:8px;">
+        <div class="card-risultato-sx">
+          <div>
+            <strong>${escapeHtml(a.titolo)}</strong> ${badgeStato}<br>
+            <small>${escapeHtml(a.categoria)} • @${escapeHtml(a.autore_username || a.autore)}</small>
+          </div>
+        </div>
+        <div class="riga-flex">
+          ${bottoneApri}
+          ${bottoneStato}
+        </div>
+      </div>
+    `;
+  }).join('') : `<p style="font-size:0.84rem; color:var(--grigio); margin:0;">Nessun articolo ancora in questa stanza. Clicca su <strong>+ Nuovo articolo nella stanza</strong> per iniziare.</p>`;
+
+  const noteHtml = stato.messaggiStanza.length ? stato.messaggiStanza.map(m => `
+    <div class="nota-item">
+      <div class="nota-meta">@${escapeHtml(m.autore_username || 'collaboratore')} • ${escapeHtml(m.created_at ? new Date(m.created_at).toLocaleString('it-IT') : 'adesso')}</div>
+      <div>${escapeHtml(m.testo)}</div>
+    </div>
+  `).join('') : `<p style="font-size:0.82rem; color:var(--grigio); margin:0;">Nessuna nota condivisa in questa stanza.</p>`;
+
+  const formNotaHtml = stato.utenteCorrente ? `
+    <form id="formNotaStanza" onsubmit="gestisciInvioNotaStanza(event)" class="riga-flex">
+      <input type="text" id="inputNotaStanza" placeholder="Scrivi una nota o un aggiornamento per la stanza..." style="flex:1; min-width:180px; border:1.8px solid var(--bordo); border-radius:10px; padding:8px 10px; font-family:inherit; font-size:0.86rem;" required>
+      <button type="submit" class="btn btn-piccolo btn-primario" id="btnInviaNotaStanza">Invia nota</button>
+    </form>
+  ` : `
+    <p style="font-size:0.8rem; color:var(--grigio); margin:0;">
+      <button type="button" class="link-autore" onclick="apriModaleAccount('login', () => entraInStanza(stato.stanze.find(s => s.nome === stato.stanzaAttiva) || { nome: stato.stanzaAttiva }))">Accedi</button> per aggiungere note o articoli nella stanza.
+    </p>
+  `;
+
+  box.innerHTML = `
+    <div class="piano-lavoro-header">
+      <div>
+        <span class="badge-cat">PIANO DI LAVORO STANZA</span>
+        <h2 style="margin:6px 0 4px; font-size:1.35rem; font-weight:900;">${escapeHtml(stanzaObj.nome)}</h2>
+        <p style="margin:0; font-size:0.86rem; color:var(--grigio);">
+          ${escapeHtml(stanzaObj.descrizione || 'Spazio condiviso per scrivere e coordinarsi.')}
+          ${stanzaObj.creata_da ? ` • Creata da <strong>${escapeHtml(stanzaObj.creata_da)}</strong>` : ''}
+        </p>
+      </div>
+      <div class="riga-flex">
+        <button type="button" class="btn btn-piccolo btn-primario" onclick="gestisciClickCrea('articolo')">+ Nuovo articolo nella stanza</button>
+        <button type="button" class="btn btn-piccolo" onclick="esciDaStanza()">Esci</button>
+      </div>
+    </div>
+
+    <div class="piano-lavoro-grid">
+      <div class="box-lavoro">
+        <h3 class="box-lavoro-titolo">Articoli della stanza (${artsStanza.length} totali • ${pubblicatiStanza.length} pubblicati)</h3>
+        ${articoliHtml}
+      </div>
+
+      <div class="box-lavoro">
+        <h3 class="box-lavoro-titolo">Lavagna / Note della stanza</h3>
+        <div class="lista-note-stanza">${noteHtml}</div>
+        ${formNotaHtml}
+      </div>
+    </div>
+  `;
+
+  box.classList.add('visibile');
+}
+
+async function gestisciInvioNotaStanza(e) {
+  e.preventDefault();
+  if (!stato.stanzaAttiva) return;
+  if (!stato.utenteCorrente) {
+    apriModaleAccount('login');
+    return;
+  }
+
+  const input = document.getElementById('inputNotaStanza');
+  const btn = document.getElementById('btnInviaNotaStanza');
+  const testo = input.value.trim();
+  if (!testo) return;
+
+  if (trovaParoleVietate(testo).length > 0) {
+    alert('La nota contiene termini non consentiti.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Invio...';
+
+  const res = await BackendSupabase.inviaMessaggioStanza({
+    stanza_nome: stato.stanzaAttiva,
+    autore_username: stato.utenteCorrente.username,
+    testo
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Invia nota';
+
+  if (!res.ok) {
+    alert('Nota non salvata su Supabase: verifica che la tabella public.stanza_messaggi e le relative policy esistano.');
+    return;
+  }
+
+  stato.messaggiStanza.unshift(res.messaggio);
+  input.value = '';
+  renderPianoLavoroStanza();
+}
+
+function selezionaArticoloInLettore(idArticolo) {
+  const art = stato.articoli.find(item => String(item.id) === String(idArticolo));
+  if (!art || normalizzaStatoArticolo(art.stato_articolo) !== 'pubblicato') return;
+  stato.stanzaAttiva = art.stanza_nome || '';
+  stato.categoriaAttiva = 'TUTTI';
+  const lista = articoliFiltrati();
+  const idx = lista.findIndex(item => String(item.id) === String(idArticolo));
+  stato.indiceArticolo = idx >= 0 ? idx : 0;
+  stato.stepApprofondimento = 1;
+  renderCategorie();
+  renderArticolo(true);
+  document.getElementById('paginaGiornale').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderCategorie() {
+  stato.categorie = filtraCategorieSenzaCultura(stato.categorie);
+  if (stato.categoriaAttiva === 'CULTURA') stato.categoriaAttiva = 'TUTTI';
+
+  const bar = document.getElementById('barraCategorie');
+  bar.innerHTML = '';
+  const catAttiva = String(stato.categoriaAttiva || 'TUTTI').trim().toUpperCase();
+
+  stato.categorie.forEach(rawCat => {
+    const cat = String(rawCat || '').trim().toUpperCase();
+    if (!cat || cat === 'CULTURA') return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'cat-pill' + (catAttiva === cat ? ' attiva' : '');
+    btn.textContent = cat;
+    btn.onclick = () => {
+      stato.categoriaAttiva = cat;
+      stato.indiceArticolo = 0;
+      stato.stepApprofondimento = 1;
+      renderCategorie();
+      renderArticolo(true);
+    };
+    bar.appendChild(btn);
+  });
+
+  const selectCat = document.getElementById('inputCategoria');
+  if (selectCat) {
+    const scelte = stato.categorie
+      .map(c => String(c || '').trim().toUpperCase())
+      .filter(c => c && c !== 'TUTTI' && c !== 'CULTURA');
+    selectCat.innerHTML = scelte.map(c => `<option value="${c}">${c}</option>`).join('');
+  }
+
+  const selectStanza = document.getElementById('inputStanzaArticolo');
+  if (selectStanza) {
+    const opzioni = ['<option value="">Giornale pubblico (nessuna stanza)</option>'];
+    const nomiInseriti = new Set();
+    stato.stanze.forEach(s => {
+      if (!s || !s.nome) return;
+      const sbloccata = stato.stanzeSbloccate.includes(s.nome) || stato.stanzaAttiva === s.nome || !s.password_stanza;
+      if (sbloccata && !nomiInseriti.has(s.nome)) {
+        nomiInseriti.add(s.nome);
+        opzioni.push(`<option value="${escapeHtml(s.nome)}">Stanza: ${escapeHtml(s.nome)}</option>`);
+      }
+    });
+    if (stato.stanzaAttiva && !nomiInseriti.has(stato.stanzaAttiva)) {
+      opzioni.push(`<option value="${escapeHtml(stato.stanzaAttiva)}">Stanza: ${escapeHtml(stato.stanzaAttiva)}</option>`);
+    }
+    selectStanza.innerHTML = opzioni.join('');
+    if (stato.stanzaAttiva) {
+      selectStanza.value = stato.stanzaAttiva;
+    }
+  }
+}
+
+function escapeHtml(testo) {
+  return String(testo || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function aggiornaVistaApprofondimento(art) {
+  const paginaEl = document.getElementById('paginaGiornale');
+  const vistaAppEl = document.getElementById('vistaApprofondimento');
+  const boxLiv2 = document.getElementById('boxLivello2');
+  const boxLiv3 = document.getElementById('boxLivello3');
+  const btnLiv3 = document.getElementById('btnAvantiLivello3');
+  const badge = document.getElementById('appCatBadge');
+
+  if (stato.stepApprofondimento === 1 || !art) {
+    paginaEl.style.display = 'block';
+    vistaAppEl.classList.remove('aperta');
+    return;
+  }
+
+  paginaEl.style.display = 'none';
+  vistaAppEl.classList.add('aperta');
+
+  document.getElementById('appImmagine').src = art.immagine || IMMAGINE_DEFAULT;
+  document.getElementById('appTitolo').textContent = art.titolo || '';
+  document.getElementById('appAutoreData').innerHTML = formattaFirmaAcuraDi(art);
+  document.getElementById('appLivello2').textContent = art.livello2 || '';
+  document.getElementById('appLivello3').textContent = art.livello3 || '';
+
+  if (stato.stepApprofondimento === 2) {
+    badge.textContent = 'LIVELLO 2 • IMMERSIONE';
+    boxLiv2.style.display = 'block';
+    boxLiv3.style.display = 'none';
+    btnLiv3.style.display = 'inline-block';
+    btnLiv3.textContent = 'Approfondisci • Livello 3 →';
+  } else if (stato.stepApprofondimento >= 3) {
+    badge.textContent = 'LIVELLO 3 • ABISSO';
+    boxLiv2.style.display = 'none';
+    boxLiv3.style.display = 'block';
+    btnLiv3.style.display = 'none';
+  }
+}
+
+function avanzaApprofondimento() {
+  const lista = articoliFiltrati();
+  const art = lista[stato.indiceArticolo];
+  if (!art) return;
+
+  if (stato.stepApprofondimento === 1) {
+    stato.stepApprofondimento = 2;
+  } else if (stato.stepApprofondimento === 2) {
+    stato.stepApprofondimento = 3;
+  }
+  aggiornaVistaApprofondimento(art);
+}
+
+function esciDaApprofondimento() {
+  stato.stepApprofondimento = 1;
+  aggiornaVistaApprofondimento();
+}
+
+async function renderArticolo(contaLettura = false) {
+  aggiornaBannerStanza();
+  renderPianoLavoroStanza();
+
+  const lista = articoliFiltrati();
+  const boxImg = document.getElementById('boxImmagineArticolo');
+  const etichettaLiv1 = document.getElementById('etichettaLivello1');
+  const boxAzioni = document.getElementById('boxAzioniArticolo');
+  const navPagine = document.getElementById('navPagineArticolo');
+
+  if (!lista.length) {
+    stato.stepApprofondimento = 1;
+    aggiornaVistaApprofondimento(null);
+    document.getElementById('artCategoria').textContent = 'VUOTO';
+    document.getElementById('artAutoreData').textContent = '';
+    boxImg.style.display = 'none';
+    etichettaLiv1.style.display = 'none';
+    boxAzioni.style.display = 'none';
+    navPagine.style.display = 'none';
+    document.getElementById('artTitolo').textContent = stato.stanzaAttiva
+      ? `Nessun articolo pubblicato nella stanza "${stato.stanzaAttiva}"`
+      : (stato.categoriaAttiva === 'TUTTI'
+          ? 'Nessun articolo pubblicato'
+          : `Nessun articolo in ${stato.categoriaAttiva}`);
+    document.getElementById('artTestoLivello').textContent = stato.stanzaAttiva
+      ? 'Usa il piano di lavoro qui sopra o "+ Nuovo articolo nella stanza" per aggiungere il primo articolo del progetto.'
+      : 'Usa "+ Crea" per pubblicare un articolo oppure seleziona un’altra categoria.';
+    document.getElementById('contatorePagine').textContent = '0 / 0';
+    return;
+  }
+
+  boxImg.style.display = 'block';
+  etichettaLiv1.style.display = 'inline-block';
+  boxAzioni.style.display = 'flex';
+  navPagine.style.display = 'flex';
+  document.getElementById('btnApprofondisci').style.display = 'inline-block';
+
+  if (stato.indiceArticolo >= lista.length) stato.indiceArticolo = 0;
+  if (stato.indiceArticolo < 0) stato.indiceArticolo = lista.length - 1;
+
+  const art = lista[stato.indiceArticolo];
+  document.getElementById('artCategoria').textContent = String(art.categoria || 'CRONACA').trim().toUpperCase();
+  document.getElementById('artAutoreData').innerHTML = formattaFirmaAcuraDi(art);
+
+  document.getElementById('artImmagine').src = art.immagine || IMMAGINE_DEFAULT;
+  document.getElementById('artTitolo').textContent = art.titolo || '';
+  document.getElementById('artTestoLivello').textContent = art.livello1 || '';
+  document.getElementById('contatorePagine').textContent = `${stato.indiceArticolo + 1} / ${lista.length}`;
+
+  aggiornaVistaApprofondimento(art);
+
+  if (contaLettura) {
+    await BackendSupabase.incrementaLettura(art);
+    salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+  }
+}
+
+function cambiaArticolo(delta) {
+  const card = document.getElementById('paginaGiornale');
+  card.classList.add(delta > 0 ? 'anim-uscita-sinistra' : 'anim-uscita-destra');
+  setTimeout(async () => {
+    stato.indiceArticolo += delta;
+    stato.stepApprofondimento = 1;
+    await renderArticolo(true);
+    card.classList.remove('anim-uscita-sinistra', 'anim-uscita-destra');
+  }, 150);
+}
+
+function tornaInizio() {
+  stato.stanzaAttiva = '';
+  stato.messaggiStanza = [];
+  stato.categoriaAttiva = 'TUTTI';
+  stato.indiceArticolo = 0;
+  stato.stepApprofondimento = 1;
+  renderCategorie();
+  renderArticolo(false);
+}
+
+function esciDaStanza() {
+  stato.stanzaAttiva = '';
+  stato.messaggiStanza = [];
+  stato.indiceArticolo = 0;
+  stato.stepApprofondimento = 1;
+  renderCategorie();
+  renderArticolo(false);
+}
+
+// ======================================================
+// 3. RICERCA, PROFILO, BOZZE, ARCHIVIO, ELIMINAZIONE
+// ======================================================
+function getListaUtentiCompleta() {
+  const mappa = new Map();
+  stato.utenti.forEach(u => {
+    if (u && u.username) mappa.set(u.username.toLowerCase(), u);
+  });
+  if (stato.utenteCorrente && stato.utenteCorrente.username) {
+    const cur = stato.utenteCorrente.username.toLowerCase();
+    mappa.set(cur, {
+      username: stato.utenteCorrente.username,
+      bio: stato.utenteCorrente.bio || 'Autore su ICEBERG.'
+    });
+  }
+  stato.articoli.forEach(a => {
+    const uname = (a.autore_username || String(a.autore || '').toLowerCase().replace(/[^a-z0-9_]+/g, '_')).trim();
+    if (uname && !mappa.has(uname)) {
+      mappa.set(uname, {
+        username: uname,
+        bio: `Autore attivo su ICEBERG (${a.autore || uname}).`
+      });
+    }
+  });
+  return Array.from(mappa.values());
+}
+
+function renderRisultatiRicerca() {
+  const box = document.getElementById('risultatiRicerca');
+  const q = stato.queryRicerca.trim().toLowerCase().replace(/^@/, '');
+  const btnPulisci = document.getElementById('btnPulisciRicerca');
+  btnPulisci.style.display = stato.queryRicerca.trim() ? 'inline-block' : 'none';
+
+  if (!q) {
+    box.classList.remove('visibile');
+    box.innerHTML = '';
+    return;
+  }
+
+  const utentiTrovati = getListaUtentiCompleta().filter(u =>
+    String(u.username || '').toLowerCase().includes(q) ||
+    String(u.bio || '').toLowerCase().includes(q)
+  );
+
+  const stanzeTrovate = stato.stanze.filter(s =>
+    String(s.nome || '').toLowerCase().includes(q) ||
+    String(s.descrizione || '').toLowerCase().includes(q) ||
+    String(s.creata_da || '').toLowerCase().includes(q)
+  );
+
+  const articoliTrovati = stato.articoli.filter(a => {
+    if (normalizzaStatoArticolo(a.stato_articolo) !== 'pubblicato') return false;
+    return String(a.titolo || '').toLowerCase().includes(q) ||
+      String(a.categoria || '').toLowerCase().includes(q) ||
+      String(a.autore || '').toLowerCase().includes(q) ||
+      String(a.autore_username || '').toLowerCase().includes(q) ||
+      String(a.livello1 || '').toLowerCase().includes(q) ||
+      String(a.livello2 || '').toLowerCase().includes(q) ||
+      String(a.livello3 || '').toLowerCase().includes(q);
+  });
+
+  let html = '';
+
+  html += `<div class="risultati-titolo-sezione">Utenti (${utentiTrovati.length})</div>`;
+  if (!utentiTrovati.length) {
+    html += `<p style="font-size:0.84rem; color:var(--grigio); margin:0 0 10px;">Nessun utente trovato per "${escapeHtml(stato.queryRicerca)}".</p>`;
+  } else {
+    utentiTrovati.forEach(u => {
+      const iniziale = String(u.username || 'U').charAt(0).toUpperCase();
+      html += `
+        <div class="card-risultato">
+          <div class="card-risultato-sx">
+            <div class="avatar-iniziale">${escapeHtml(iniziale)}</div>
+            <div>
+              <strong>@${escapeHtml(u.username)}</strong><br>
+              <small>${escapeHtml(u.bio || 'Profilo autore su ICEBERG')}</small>
+            </div>
+          </div>
+          <button type="button" class="btn btn-piccolo" onclick="apriProfiloUtente('${escapeHtml(u.username)}')">Vedi profilo</button>
+        </div>
+      `;
+    });
+  }
+
+  html += `<div class="risultati-titolo-sezione">Stanze (${stanzeTrovate.length})</div>`;
+  if (!stanzeTrovate.length) {
+    html += `<p style="font-size:0.84rem; color:var(--grigio); margin:0 0 10px;">Nessuna stanza trovata per "${escapeHtml(stato.queryRicerca)}".</p>`;
+  } else {
+    stanzeTrovate.forEach(s => {
+      const haPassword = Boolean(String(s.password_stanza || '').trim());
+      const sbloccata = !haPassword || stato.stanzeSbloccate.includes(s.nome);
+      const badgeStanza = sbloccata
+        ? '<span class="badge-cat">Piano di lavoro</span>'
+        : '<span class="badge-cat">🔒 Password</span>';
+      html += `
+        <div class="card-risultato">
+          <div class="card-risultato-sx">
+            <img class="thumb-risultato" src="${escapeHtml(s.immagine || IMMAGINE_DEFAULT)}" alt="${escapeHtml(s.nome)}">
+            <div>
+              <strong>${escapeHtml(s.nome)}</strong> ${badgeStanza}<br>
+              <small>${escapeHtml(s.descrizione || 'Spazio di progetto condiviso')} • ${escapeHtml(s.creata_da || '')}</small>
+            </div>
+          </div>
+          <button type="button" class="btn btn-piccolo btn-primario" onclick="richiediAccessoStanzaPerNome('${escapeHtml(s.nome)}')">Entra</button>
+        </div>
+      `;
+    });
+  }
+
+  html += `<div class="risultati-titolo-sezione">Articoli (${articoliTrovati.length})</div>`;
+  if (!articoliTrovati.length) {
+    html += `<p style="font-size:0.84rem; color:var(--grigio); margin:0;">Nessun articolo trovato per "${escapeHtml(stato.queryRicerca)}".</p>`;
+  } else {
+    articoliTrovati.forEach(a => {
+      html += `
+        <div class="card-risultato">
+          <div class="card-risultato-sx">
+            <img class="thumb-risultato" src="${escapeHtml(a.immagine || IMMAGINE_DEFAULT)}" alt="${escapeHtml(a.titolo)}">
+            <div>
+              <strong>${escapeHtml(a.titolo)}</strong><br>
+              <small>${escapeHtml(a.categoria)} • A cura di @${escapeHtml(a.autore_username || a.autore)}${a.stanza_nome ? ' • Stanza: ' + escapeHtml(a.stanza_nome) : ''}</small>
+            </div>
+          </div>
+          <button type="button" class="btn btn-piccolo" onclick="apriArticoloDaRicerca('${escapeHtml(a.id)}')">Apri</button>
+        </div>
+      `;
+    });
+  }
+
+  box.innerHTML = html;
+  box.classList.add('visibile');
+}
+
+function apriProfiloUtente(username, scheda = 'pubblicati') {
+  const clean = String(username || '').toLowerCase();
+  const tuttiUtenti = getListaUtentiCompleta();
+  const profilo = tuttiUtenti.find(u => u.username.toLowerCase() === clean) || {
+    username: clean || 'autore',
+    bio: 'Profilo autore su ICEBERG.'
+  };
+
+  stato.profiloVisualizzato = profilo.username;
+  stato.schedaProfilo = scheda;
+
+  const isMioProfilo = Boolean(
+    stato.utenteCorrente &&
+    String(stato.utenteCorrente.username || '').toLowerCase() === profilo.username.toLowerCase()
+  );
+
+  const tuttiArticoliUtente = stato.articoli
+    .map(normalizzaArticolo)
+    .filter(a => {
+      const autUser = String(a.autore_username || '').toLowerCase();
+      const autNome = String(a.autore || '').toLowerCase().replace(/^@/, '');
+      const uTarget = profilo.username.toLowerCase();
+      return autUser === uTarget || autNome === uTarget;
+    });
+
+  const articoliPubblicati = tuttiArticoliUtente.filter(a => a.stato_articolo === 'pubblicato');
+  const articoliArchiviati = tuttiArticoliUtente.filter(a => a.stato_articolo === 'archiviato');
+  const articoliBozza = tuttiArticoliUtente.filter(a => a.stato_articolo === 'bozza');
+
+  const stanzeUtente = stato.stanze.filter(s =>
+    String(s.creata_da || '').toLowerCase().includes(profilo.username.toLowerCase())
+  );
+
+  const totaleLetture = articoliPubblicati.reduce((acc, a) => acc + (Number(a.letture) || 0), 0);
+  const letture7g = articoliPubblicati.reduce((acc, a) => acc + (Number(a.letture_7g) || 0), 0);
+  const letture30g = articoliPubblicati.reduce((acc, a) => acc + (Number(a.letture_30g) || 0), 0);
+  const maxLetture = Math.max(1, ...articoliPubblicati.map(a => Number(a.letture) || 0));
+
+  let listaDaMostrare = articoliPubblicati;
+  if (isMioProfilo) {
+    if (scheda === 'archiviati') listaDaMostrare = articoliArchiviati;
+    else if (scheda === 'bozze') listaDaMostrare = articoliBozza;
+  }
+
+  document.getElementById('titoloProfiloUtente').textContent = `@${profilo.username}`;
+
+  const pulsantiGestioneAccount = isMioProfilo ? `
+    <div class="riga-flex" style="margin-top:10px;">
+      <button type="button" class="btn btn-piccolo btn-primario" onclick="chiudiModali(); apriModaleAccount('login');">Gestisci profilo (username, bio, password)</button>
+      <button type="button" class="btn btn-piccolo" onclick="chiudiModali(); apriModaleScrivi('articolo');">Nuovo articolo / bozza</button>
+    </div>
+  ` : '';
+
+  const schedeHtml = isMioProfilo ? `
+    <div class="switch-tre">
+      <button type="button" class="btn-modo ${scheda === 'pubblicati' ? 'attivo' : ''}" onclick="apriProfiloUtente('${escapeHtml(profilo.username)}', 'pubblicati')">
+        Pubblicati (${articoliPubblicati.length})
+      </button>
+      <button type="button" class="btn-modo ${scheda === 'bozze' ? 'attivo' : ''}" onclick="apriProfiloUtente('${escapeHtml(profilo.username)}', 'bozze')">
+        Bozze (${articoliBozza.length})
+      </button>
+      <button type="button" class="btn-modo ${scheda === 'archiviati' ? 'attivo' : ''}" onclick="apriProfiloUtente('${escapeHtml(profilo.username)}', 'archiviati')">
+        Archiviati (${articoliArchiviati.length})
+      </button>
+    </div>
+  ` : `<div class="risultati-titolo-sezione">Articoli pubblicati (${articoliPubblicati.length})</div>`;
+
+  const cardsHtml = listaDaMostrare.length ? listaDaMostrare.map(a => {
+    const perc = Math.min(100, Math.round(((Number(a.letture) || 0) / maxLetture) * 100));
+    const statoBadge = a.stato_articolo === 'bozza'
+      ? '<span class="badge-stato bozza">Bozza</span>'
+      : (a.stato_articolo === 'archiviato'
+          ? '<span class="badge-stato archiviato">Archiviato</span>'
+          : '<span class="badge-cat">Pubblicato</span>');
+
+    let azioniMioArticolo = '';
+    if (isMioProfilo) {
+      if (a.stato_articolo === 'bozza') {
+        azioniMioArticolo += `
+          <button type="button" class="btn btn-piccolo btn-secondario" onclick="modificaBozzaInCrea('${escapeHtml(a.id)}')">Modifica</button>
+          <button type="button" class="btn btn-piccolo btn-primario" onclick="cambiaStatoArticolo('${escapeHtml(a.id)}', 'pubblicato')">Pubblica</button>
+        `;
+      } else if (a.stato_articolo === 'pubblicato') {
+        azioniMioArticolo += `
+          <button type="button" class="btn btn-piccolo" onclick="cambiaStatoArticolo('${escapeHtml(a.id)}', 'archiviato')">Archivia</button>
+        `;
+      } else if (a.stato_articolo === 'archiviato') {
+        azioniMioArticolo += `
+          <button type="button" class="btn btn-piccolo btn-primario" onclick="cambiaStatoArticolo('${escapeHtml(a.id)}', 'pubblicato')">Ripubblica</button>
+        `;
+      }
+      azioniMioArticolo += `
+        <button type="button" class="btn btn-piccolo btn-pericolo" onclick="eliminaArticoloUtente('${escapeHtml(a.id)}')">Elimina</button>
+      `;
+    } else if (a.stato_articolo === 'pubblicato') {
+      azioniMioArticolo = `<button type="button" class="btn btn-piccolo" onclick="chiudiModali(); apriArticoloDaRicerca('${escapeHtml(a.id)}')">Leggi</button>`;
+    }
+
+    const statsBlocco = a.stato_articolo === 'pubblicato' ? `
+      <div class="finestre-letture">
+        <div class="finestra-pill"><span>Oggi</span><strong>${a.letture_oggi}</strong></div>
+        <div class="finestra-pill"><span>7 giorni</span><strong>${a.letture_7g}</strong></div>
+        <div class="finestra-pill"><span>30 giorni</span><strong>${a.letture_30g}</strong></div>
+        <div class="finestra-pill"><span>Totale</span><strong>${a.letture}</strong></div>
+      </div>
+      <div class="barra-progresso"><div style="width:${perc}%"></div></div>
+    ` : '';
+
+    return `
+      <div class="stat-card">
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start; flex-wrap:wrap;">
+          <div>
+            <strong>${escapeHtml(a.titolo)}</strong><br>
+            <small>${escapeHtml(a.categoria)} • ${escapeHtml(a.data || '')}${a.stanza_nome ? ' • Stanza: ' + escapeHtml(a.stanza_nome) : ''}</small>
+          </div>
+          ${statoBadge}
+        </div>
+        ${statsBlocco}
+        <div class="riga-flex" style="margin-top:10px;">
+          ${azioniMioArticolo}
+        </div>
+      </div>
+    `;
+  }).join('') : `<p style="font-size:0.84rem; color:var(--grigio);">Nessun elemento in questa sezione.</p>`;
+
+  document.getElementById('contenutoProfiloUtente').innerHTML = `
+    <div class="stat-card">
+      <div>
+        <strong>@${escapeHtml(profilo.username)}</strong><br>
+        <small>${escapeHtml(profilo.bio || 'Autore su ICEBERG')}</small>
+      </div>
+      ${pulsantiGestioneAccount}
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="kpi-label">Pubblicati</div>
+        <div class="kpi-valore">${articoliPubblicati.length}</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Letture 7 gg</div>
+        <div class="kpi-valore">${letture7g}</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Letture 30 gg</div>
+        <div class="kpi-valore">${letture30g}</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label">Letture totali</div>
+        <div class="kpi-valore">${totaleLetture}</div>
+      </div>
+    </div>
+
+    <p style="font-size:0.78rem; color:var(--grigio); margin:0 0 10px;">
+      Stanze collegate all'autore: <strong>${stanzeUtente.length}</strong>
+    </p>
+
+    ${schedeHtml}
+    ${cardsHtml}
+  `;
+
+  document.getElementById('modaleProfilo').classList.add('aperto');
+}
+
+async function cambiaStatoArticolo(idArticolo, nuovoStato) {
+  const idx = stato.articoli.findIndex(a => String(a.id) === String(idArticolo));
+  if (idx < 0) return;
+
+  const statoPulito = normalizzaStatoArticolo(nuovoStato);
+  stato.articoli[idx].stato_articolo = statoPulito;
+  if (statoPulito === 'pubblicato' && (Number(stato.articoli[idx].letture) || 0) === 0) {
+    stato.articoli[idx].letture = 1;
+    stato.articoli[idx].letture_oggi = 1;
+    stato.articoli[idx].letture_7g = 1;
+    stato.articoli[idx].letture_30g = 1;
+  }
+
+  await BackendSupabase.aggiornaArticolo(stato.articoli[idx].id, {
+    stato_articolo: statoPulito,
+    letture: stato.articoli[idx].letture,
+    letture_oggi: stato.articoli[idx].letture_oggi,
+    letture_7g: stato.articoli[idx].letture_7g,
+    letture_30g: stato.articoli[idx].letture_30g
+  });
+
+  salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+  renderArticolo(false);
+  if (stato.queryRicerca) renderRisultatiRicerca();
+
+  const modaleProfiloAperto = document.getElementById('modaleProfilo').classList.contains('aperto');
+  if (modaleProfiloAperto && stato.utenteCorrente) {
+    const schedaRitorno = statoPulito === 'archiviato' ? 'archiviati' : 'pubblicati';
+    apriProfiloUtente(stato.profiloVisualizzato || stato.utenteCorrente.username, schedaRitorno);
+  }
+}
+
+async function eliminaArticoloUtente(idArticolo) {
+  const idx = stato.articoli.findIndex(a => String(a.id) === String(idArticolo));
+  if (idx < 0) return;
+  const art = stato.articoli[idx];
+
+  await BackendSupabase.eliminaArticolo(art.id);
+  stato.articoli.splice(idx, 1);
+  salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+
+  renderArticolo(false);
+  if (stato.queryRicerca) renderRisultatiRicerca();
+  if (document.getElementById('modaleProfilo').classList.contains('aperto') && stato.utenteCorrente) {
+    apriProfiloUtente(stato.profiloVisualizzato || stato.utenteCorrente.username, stato.schedaProfilo || 'pubblicati');
+  }
+}
+
+function modificaBozzaInCrea(idArticolo) {
+  const art = stato.articoli.find(a => String(a.id) === String(idArticolo));
+  if (!art) return;
+  chiudiModali();
+  apriModaleScrivi('articolo');
+  document.getElementById('editArticoloId').value = String(art.id);
+  document.getElementById('inputCategoria').value = art.categoria || 'CRONACA';
+  document.getElementById('inputStanzaArticolo').value = art.stanza_nome || '';
+  document.getElementById('inputTitolo').value = art.titolo || '';
+  document.getElementById('inputImmagineUrl').value = (art.immagine && !art.immagine.startsWith('data:')) ? art.immagine : '';
+  stato.immagineArticoloDataUrl = (art.immagine && art.immagine.startsWith('data:')) ? art.immagine : '';
+  document.getElementById('inputLiv1').value = art.livello1 || '';
+  document.getElementById('inputLiv2').value = art.livello2 || '';
+  document.getElementById('inputLiv3').value = art.livello3 || '';
+  valutaControlloAi();
+  valutaControlloParoleArticolo();
+}
+
+function pulisciRicerca() {
+  stato.queryRicerca = '';
+  document.getElementById('inputRicerca').value = '';
+  renderRisultatiRicerca();
+}
+
+function richiediAccessoStanzaPerNome(nomeStanza) {
+  const stanza = stato.stanze.find(s => String(s.nome || '').toLowerCase() === String(nomeStanza || '').toLowerCase());
+  if (!stanza) return;
+
+  const haPassword = Boolean(String(stanza.password_stanza || '').trim());
+  if (!haPassword || stato.stanzeSbloccate.includes(stanza.nome)) {
+    entraInStanza(stanza);
+    return;
+  }
+
+  stato.stanzaInAccesso = stanza;
+  document.getElementById('titoloAccessoStanza').textContent = `Stanza: ${stanza.nome}`;
+  document.getElementById('descAccessoStanza').textContent = stanza.descrizione || 'Inserisci la password per sbloccare ed entrare nel piano di lavoro.';
+  document.getElementById('inputPasswordAccesso').value = '';
+  document.getElementById('errorePasswordStanza').style.display = 'none';
+  document.getElementById('modaleAccessoStanza').classList.add('aperto');
+}
+
+function richiediAccessoStanza(indiceStanza) {
+  const stanza = stato.stanze[indiceStanza];
+  if (!stanza) return;
+  richiediAccessoStanzaPerNome(stanza.nome);
+}
+
+document.getElementById('formAccessoStanza').addEventListener('submit', e => {
+  e.preventDefault();
+  const stanza = stato.stanzaInAccesso;
+  if (!stanza) return;
+  const pwd = document.getElementById('inputPasswordAccesso').value;
+  if (pwd === stanza.password_stanza) {
+    if (!stato.stanzeSbloccate.includes(stanza.nome)) {
+      stato.stanzeSbloccate.push(stanza.nome);
+      salvaStanzeSbloccate(stato.stanzeSbloccate);
+    }
+    stato.stanzaInAccesso = null;
+    chiudiModali();
+    entraInStanza(stanza);
+  } else {
+    document.getElementById('errorePasswordStanza').style.display = 'block';
+  }
+});
+
+async function entraInStanza(stanza) {
+  if (!stanza || !stanza.nome) return;
+  stato.stanzaAttiva = stanza.nome;
+  stato.categoriaAttiva = 'TUTTI';
+  stato.indiceArticolo = 0;
+  stato.stepApprofondimento = 1;
+  stato.messaggiStanza = await BackendSupabase.caricaMessaggiStanza(stanza.nome);
+  pulisciRicerca();
+  renderCategorie();
+  await renderArticolo(true);
+  document.getElementById('pianoLavoroStanza').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function apriArticoloDaRicerca(idArticolo) {
+  const art = stato.articoli.find(item => String(item.id) === String(idArticolo));
+  if (!art || normalizzaStatoArticolo(art.stato_articolo) !== 'pubblicato') return;
+
+  if (art.stanza_nome) {
+    const stanza = stato.stanze.find(s => s.nome === art.stanza_nome);
+    const haPassword = Boolean(stanza && String(stanza.password_stanza || '').trim());
+    if (stanza && haPassword && !stato.stanzeSbloccate.includes(stanza.nome)) {
+      richiediAccessoStanzaPerNome(stanza.nome);
+      return;
+    }
+  }
+
+  stato.stanzaAttiva = art.stanza_nome || '';
+  stato.categoriaAttiva = 'TUTTI';
+  const lista = articoliFiltrati();
+  const idx = lista.findIndex(item => String(item.id) === String(idArticolo));
+  stato.indiceArticolo = idx >= 0 ? idx : 0;
+  stato.stepApprofondimento = 1;
+  pulisciRicerca();
+  renderCategorie();
+  renderArticolo(true);
+}
+
+document.getElementById('inputRicerca').addEventListener('input', e => {
+  stato.queryRicerca = e.target.value;
+  renderRisultatiRicerca();
+});
+
+// ======================================================
+// 4. SWIPE TOUCH SU IPAD (SOLO SULLA PAGINA PRINCIPALE)
+// ======================================================
+let touchStartX = 0;
+let touchStartY = 0;
+const lettoreEl = document.querySelector('.lettore-wrap');
+lettoreEl.addEventListener('touchstart', e => {
+  if (stato.stepApprofondimento === 1 && e.touches.length === 1) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }
+}, { passive: true });
+
+lettoreEl.addEventListener('touchend', e => {
+  if (stato.stepApprofondimento !== 1 || !e.changedTouches.length) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+    if (dx < 0) cambiaArticolo(1);
+    else cambiaArticolo(-1);
+  }
+}, { passive: true });
+
+// ======================================================
+// 5. AUTH, GESTIONE PROFILO, MODALI, FILTRI E AREA AUTORE
+// ======================================================
+function cambiaTabAuth(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('btnTabLogin').classList.toggle('attivo', isLogin);
+  document.getElementById('btnTabRegister').classList.toggle('attivo', !isLogin);
+  document.getElementById('formLogin').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('formRegister').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('erroreAuth').style.display = 'none';
+  document.getElementById('erroreRegister').style.display = 'none';
+}
+
+function apriModaleAccount(tab = 'login', azioneDopo = null) {
+  stato.azioneDopoLogin = azioneDopo;
+  const loggatoBox = document.getElementById('pannelloUtenteLoggato');
+  const authBox = document.getElementById('pannelloAuthForms');
+  const msgBox = document.getElementById('messaggioGestioneAccount');
+  msgBox.style.display = 'none';
+
+  if (stato.utenteCorrente) {
+    loggatoBox.style.display = 'block';
+    authBox.style.display = 'none';
+    document.getElementById('mioUsername').textContent = `@${stato.utenteCorrente.username}`;
+    document.getElementById('miaEmail').textContent = stato.utenteCorrente.email || '';
+    document.getElementById('inputMioUsername').value = stato.utenteCorrente.username || '';
+    document.getElementById('inputMiaBio').value = stato.utenteCorrente.bio || '';
+    document.getElementById('inputNuovaPassword').value = '';
+  } else {
+    loggatoBox.style.display = 'none';
+    authBox.style.display = 'block';
+    cambiaTabAuth(tab);
+  }
+
+  document.getElementById('modaleAccount').classList.add('aperto');
+}
+
+function completaAccessoUtente(utente) {
+  stato.utenteCorrente = utente;
+  if (!stato.utenti.some(u => u.username.toLowerCase() === utente.username.toLowerCase())) {
+    stato.utenti.unshift({ username: utente.username, bio: utente.bio || '' });
+  }
+  salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+  aggiornaBottoneAccount();
+  const azione = stato.azioneDopoLogin;
+  stato.azioneDopoLogin = null;
+  chiudiModali();
+  if (typeof azione === 'function') {
+    azione();
+  } else if (stato.stanzaAttiva) {
+    renderPianoLavoroStanza();
+  }
+}
+
+document.getElementById('formLogin').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const password = document.getElementById('loginPassword').value;
+  const errBox = document.getElementById('erroreAuth');
+  const btn = document.getElementById('btnSubmitLogin');
+
+  btn.disabled = true;
+  btn.textContent = 'Accesso...';
+  errBox.style.display = 'none';
+
+  const res = await BackendSupabase.loginConAuth({ email, password });
+
+  btn.disabled = false;
+  btn.textContent = 'Accedi';
+
+  if (!res.ok) {
+    errBox.textContent = res.errore;
+    errBox.style.display = 'block';
+    return;
+  }
+
+  e.target.reset();
+  completaAccessoUtente(res.utente);
+});
+
+document.getElementById('formRegister').addEventListener('submit', async e => {
+  e.preventDefault();
+  const rawUser = document.getElementById('regUsername').value;
+  const bio = document.getElementById('regBio').value.trim();
+  const vietate = trovaParoleVietate(`${rawUser} ${bio}`);
+  const errBox = document.getElementById('erroreRegister');
+
+  if (vietate.length > 0) {
+    errBox.style.color = 'var(--allerta)';
+    errBox.textContent = 'Nome utente o bio contengono parole non consentite.';
+    errBox.style.display = 'block';
+    return;
+  }
+
+  const username = pulisciUsername(rawUser, document.getElementById('regEmail').value);
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const password = document.getElementById('regPassword').value;
+  const btn = document.getElementById('btnSubmitRegister');
+
+  if (password.length < 6) {
+    errBox.style.color = 'var(--allerta)';
+    errBox.textContent = 'Inserisci una password di almeno 6 caratteri.';
+    errBox.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Registrazione...';
+  errBox.style.display = 'none';
+
+  const res = await BackendSupabase.registraConAuth({ username, email, password, bio });
+
+  btn.disabled = false;
+  btn.textContent = 'Registrati con Supabase Auth';
+
+  if (!res.ok) {
+    errBox.style.color = 'var(--allerta)';
+    errBox.textContent = res.errore;
+    errBox.style.display = 'block';
+    return;
+  }
+
+  if (!stato.utenti.some(u => u.username.toLowerCase() === res.utente.username.toLowerCase())) {
+    stato.utenti.unshift({ username: res.utente.username, bio: res.utente.bio || '' });
+    salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+  }
+
+  e.target.reset();
+
+  if (res.richiedeConfermaEmail) {
+    errBox.style.color = 'var(--ok)';
+    errBox.textContent = 'Account creato su Supabase Auth. Controlla la tua email per confermarlo, poi accedi da "Accedi".';
+    errBox.style.display = 'block';
+    return;
+  }
+
+  completaAccessoUtente(res.utente);
+});
+
+async function salvaImpostazioniAccount() {
+  if (!stato.utenteCorrente) return;
+  const msgBox = document.getElementById('messaggioGestioneAccount');
+  const vecchioUsername = stato.utenteCorrente.username;
+  const rawUser = document.getElementById('inputMioUsername').value;
+  const nuovaBio = document.getElementById('inputMiaBio').value.trim();
+  const nuovaPwd = document.getElementById('inputNuovaPassword').value;
+
+  const vietate = trovaParoleVietate(`${rawUser} ${nuovaBio}`);
+  if (vietate.length > 0) {
+    msgBox.style.display = 'block';
+    msgBox.style.color = 'var(--allerta)';
+    msgBox.textContent = 'Nome utente o bio contengono parole non consentite.';
+    return;
+  }
+
+  const nuovoUsername = pulisciUsername(rawUser, stato.utenteCorrente.email);
+  if (nuovaPwd && nuovaPwd.length < 6) {
+    msgBox.style.display = 'block';
+    msgBox.style.color = 'var(--allerta)';
+    msgBox.textContent = 'La nuova password deve avere almeno 6 caratteri.';
+    return;
+  }
+
+  const btn = document.getElementById('btnSalvaAccount');
+  btn.disabled = true;
+  btn.textContent = 'Salvataggio...';
+
+  const resAuth = await BackendSupabase.aggiornaUtenteAuth({
+    username: nuovoUsername,
+    bio: nuovaBio,
+    password: nuovaPwd
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Salva impostazioni profilo';
+
+  if (!resAuth.ok) {
+    msgBox.style.display = 'block';
+    msgBox.style.color = 'var(--allerta)';
+    msgBox.textContent = resAuth.errore;
+    return;
+  }
+
+  stato.utenteCorrente.username = nuovoUsername;
+  stato.utenteCorrente.bio = nuovaBio;
+
+  const idxUtente = stato.utenti.findIndex(u => u.username.toLowerCase() === vecchioUsername.toLowerCase());
+  if (idxUtente >= 0) {
+    stato.utenti[idxUtente] = { username: nuovoUsername, bio: nuovaBio };
+  } else {
+    stato.utenti.unshift({ username: nuovoUsername, bio: nuovaBio });
+  }
+
+  if (vecchioUsername !== nuovoUsername) {
+    stato.articoli.forEach(a => {
+      if (String(a.autore_username || '').toLowerCase() === vecchioUsername.toLowerCase()) {
+        a.autore_username = nuovoUsername;
+        a.autore = nuovoUsername;
+      }
+    });
+  }
+
+  salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+  await BackendSupabase.aggiornaProfiloTabella(vecchioUsername, nuovoUsername, nuovaBio);
+  aggiornaBottoneAccount();
+  renderArticolo(false);
+
+  msgBox.style.display = 'block';
+  msgBox.style.color = 'var(--ok)';
+  msgBox.textContent = nuovaPwd
+    ? 'Profilo e password aggiornati.'
+    : 'Profilo aggiornato.';
+  document.getElementById('inputNuovaPassword').value = '';
+  document.getElementById('mioUsername').textContent = `@${nuovoUsername}`;
+}
+
+async function effettuaLogout() {
+  await BackendSupabase.logoutConAuth();
+  stato.utenteCorrente = null;
+  aggiornaBottoneAccount();
+  chiudiModali();
+  if (stato.stanzaAttiva) renderPianoLavoroStanza();
+}
+
+function gestisciClickCrea(modo = 'articolo') {
+  if (!stato.utenteCorrente) {
+    apriModaleAccount('register', () => apriModaleScrivi(modo));
+    return;
+  }
+  apriModaleScrivi(modo);
+}
+
+function cambiaModalitaCrea(modo) {
+  const isArt = modo === 'articolo';
+  document.getElementById('btnModoArticolo').classList.toggle('attivo', isArt);
+  document.getElementById('btnModoStanza').classList.toggle('attivo', !isArt);
+  document.getElementById('formArticolo').style.display = isArt ? 'block' : 'none';
+  document.getElementById('formStanza').style.display = isArt ? 'none' : 'block';
+  document.getElementById('titoloModaleCrea').textContent = isArt ? 'Nuovo articolo su ICEBERG' : 'Nuova stanza di progetto';
+  if (isArt) {
+    valutaControlloAi();
+    valutaControlloParoleArticolo();
+  } else {
+    valutaControlloParoleStanza();
+  }
+}
+
+function apriModaleScrivi(modo = 'articolo') {
+  if (!stato.utenteCorrente) {
+    apriModaleAccount('login', () => apriModaleScrivi(modo));
+    return;
+  }
+  document.getElementById('editArticoloId').value = '';
+  const labelUtente = `@${stato.utenteCorrente.username}`;
+  document.getElementById('inputAutore').value = labelUtente;
+  document.getElementById('inputCreatoreStanza').value = labelUtente;
+  renderCategorie();
+  cambiaModalitaCrea(modo);
+  document.getElementById('modaleScrivi').classList.add('aperto');
+}
+
+function apriModaleAutore() {
+  const contenitore = document.getElementById('listaStatistiche');
+  const kpiBox = document.getElementById('kpiAutore');
+
+  if (!stato.utenteCorrente || !stato.utenteCorrente.username) {
+    kpiBox.innerHTML = '';
+    contenitore.innerHTML = `
+      <div class="stat-card">
+        <strong>Accesso richiesto</strong>
+        <p style="font-size:0.86rem; color:var(--grigio); margin:6px 0 12px;">
+          Accedi al tuo account per visualizzare le statistiche degli articoli che hai scritto tu.
+        </p>
+        <button type="button" class="btn btn-primario" onclick="chiudiModali(); apriModaleAccount('login', apriModaleAutore);">
+          Accedi ora
+        </button>
+      </div>
+    `;
+    document.getElementById('modaleAutore').classList.add('aperto');
+    return;
+  }
+
+  const mioUsername = String(stato.utenteCorrente.username).trim().toLowerCase();
+
+  const arts = stato.articoli
+    .map(normalizzaArticolo)
+    .filter(a => {
+      if (a.stato_articolo !== 'pubblicato') return false;
+      const autUser = String(a.autore_username || '').trim().toLowerCase();
+      const autNome = String(a.autore || '').trim().toLowerCase().replace(/^@/, '');
+      return autUser === mioUsername || autNome === mioUsername;
+    });
+
+  const totOggi = arts.reduce((acc, a) => acc + a.letture_oggi, 0);
+  const tot7g = arts.reduce((acc, a) => acc + a.letture_7g, 0);
+  const tot30g = arts.reduce((acc, a) => acc + a.letture_30g, 0);
+  const totStorico = arts.reduce((acc, a) => acc + a.letture, 0);
+  const maxLetture = Math.max(1, ...arts.map(a => a.letture));
+
+  kpiBox.innerHTML = `
+    <div class="kpi-box">
+      <div class="kpi-label">Oggi (@${escapeHtml(mioUsername)})</div>
+      <div class="kpi-valore">${totOggi}</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Ultimi 7 gg</div>
+      <div class="kpi-valore">${tot7g}</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Ultimi 30 gg</div>
+      <div class="kpi-valore">${tot30g}</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-label">Totale</div>
+      <div class="kpi-valore">${totStorico}</div>
+    </div>
+  `;
+
+  if (!arts.length) {
+    contenitore.innerHTML = `
+      <div class="stat-card">
+        <strong>Nessun articolo pubblicato da @${escapeHtml(mioUsername)}</strong>
+        <p style="font-size:0.84rem; color:var(--grigio); margin:6px 0 0;">
+          Quando pubblicherai un tuo articolo con "+ Crea", le sue letture compariranno qui.
+        </p>
+      </div>
+    `;
+  } else {
+    contenitore.innerHTML = arts.map(a => {
+      const perc = Math.min(100, Math.round((a.letture / maxLetture) * 100));
+      return `
+        <div class="stat-card">
+          <div style="display:flex; justify-content:space-between; gap:10px; align-items:flex-start;">
+            <div>
+              <strong>${escapeHtml(a.titolo)}</strong><br>
+              <small>${escapeHtml(a.categoria)} • A cura di @${escapeHtml(a.autore_username)}${a.stanza_nome ? ' • Stanza: ' + escapeHtml(a.stanza_nome) : ''}</small>
+            </div>
+            <span class="badge-cat">${a.letture} tot</span>
+          </div>
+          <div class="finestre-letture">
+            <div class="finestra-pill"><span>Oggi</span><strong>${a.letture_oggi}</strong></div>
+            <div class="finestra-pill"><span>7 giorni</span><strong>${a.letture_7g}</strong></div>
+            <div class="finestra-pill"><span>30 giorni</span><strong>${a.letture_30g}</strong></div>
+            <div class="finestra-pill"><span>Storico</span><strong>${a.letture}</strong></div>
+          </div>
+          <div class="barra-progresso"><div style="width:${perc}%"></div></div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  document.getElementById('modaleAutore').classList.add('aperto');
+}
+
+function chiudiModali() {
+  document.querySelectorAll('.modale-sfondo').forEach(m => m.classList.remove('aperto'));
+}
+
+async function aggiungiCategoriaPrompt() {
+  const nome = prompt('Nome nuova categoria:');
+  if (!nome) return;
+  const pulita = nome.trim().toUpperCase();
+  if (!pulita || pulita === 'CULTURA') return;
+  if (trovaParoleVietate(pulita).length > 0) {
+    alert('Nome categoria non consentito.');
+    return;
+  }
+  if (!stato.categorie.includes(pulita)) {
+    stato.categorie.push(pulita);
+  }
+  await BackendSupabase.creaCategoria(pulita);
+  salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+  renderCategorie();
+  document.getElementById('inputCategoria').value = pulita;
+}
+
+function collegaDropzone(dropEl, inputFileEl, inputUrlEl, onCaricata) {
+  function leggiFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      onCaricata(ev.target.result, file.name);
+      if (inputUrlEl) inputUrlEl.value = '';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  dropEl.addEventListener('dragover', e => {
+    e.preventDefault();
+    dropEl.classList.add('dragover');
+  });
+  dropEl.addEventListener('dragleave', () => dropEl.classList.remove('dragover'));
+  dropEl.addEventListener('drop', e => {
+    e.preventDefault();
+    dropEl.classList.remove('dragover');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      leggiFile(e.dataTransfer.files[0]);
+    }
+  });
+  inputFileEl.addEventListener('change', e => {
+    if (e.target.files && e.target.files[0]) {
+      leggiFile(e.target.files[0]);
+    }
+  });
+}
+
+collegaDropzone(
+  document.getElementById('dropzoneImg'),
+  document.getElementById('inputFileImg'),
+  document.getElementById('inputImmagineUrl'),
+  (dataUrl, nomeFile) => {
+    stato.immagineArticoloDataUrl = dataUrl;
+    document.getElementById('dropzoneImg').textContent = `Immagine caricata: ${nomeFile}`;
+  }
+);
+
+collegaDropzone(
+  document.getElementById('dropzoneStanzaImg'),
+  document.getElementById('inputFileStanzaImg'),
+  document.getElementById('inputImmagineStanzaUrl'),
+  (dataUrl, nomeFile) => {
+    stato.immagineStanzaDataUrl = dataUrl;
+    document.getElementById('dropzoneStanzaImg').textContent = `Immagine stanza caricata: ${nomeFile}`;
+  }
+);
+
+function valutaControlloAi() {
+  const testoCompleto = [
+    document.getElementById('inputTitolo').value,
+    document.getElementById('inputLiv1').value,
+    document.getElementById('inputLiv2').value,
+    document.getElementById('inputLiv3').value
+  ].join(' ').toLowerCase();
+
+  const box = document.getElementById('boxControlloAi');
+  if (!testoCompleto.trim()) {
+    box.className = 'avviso-ai';
+    return;
+  }
+
+  const indiziAi = [
+    'in conclusione',
+    'è fondamentale notare',
+    'in un mondo in rapida evoluzione',
+    'spero che questo possa aiutarti',
+    'come modello linguistico',
+    'non esitare a chiedere'
+  ];
+  const trovati = indiziAi.filter(frase => testoCompleto.includes(frase));
+
+  if (trovati.length > 0) {
+    box.className = 'avviso-ai allerta';
+    box.textContent = `Controllo anti-AI: rilevate formule tipiche da assistente (${trovati.join(', ')}). Riscrivi in modo più naturale e personale.`;
+  } else {
+    box.className = 'avviso-ai ok';
+    box.textContent = 'Controllo anti-AI: nessun pattern tipico rilevato.';
+  }
+}
+
+function valutaControlloParoleArticolo() {
+  const testoCompleto = [
+    document.getElementById('inputTitolo').value,
+    document.getElementById('inputLiv1').value,
+    document.getElementById('inputLiv2').value,
+    document.getElementById('inputLiv3').value
+  ].join(' ');
+
+  const box = document.getElementById('boxControlloParole');
+  if (!testoCompleto.trim()) {
+    box.className = 'avviso-ai';
+    return [];
+  }
+
+  const vietate = trovaParoleVietate(testoCompleto);
+  if (vietate.length > 0) {
+    box.className = 'avviso-ai allerta';
+    box.textContent = 'Controllo linguaggio: rilevati termini discriminatori o offensivi non consentiti. Rimuovili prima di salvare o pubblicare.';
+  } else {
+    box.className = 'avviso-ai ok';
+    box.textContent = 'Controllo linguaggio: nessun termine vietato rilevato.';
+  }
+  return vietate;
+}
+
+function valutaControlloParoleStanza() {
+  const testoStanza = [
+    document.getElementById('inputNomeStanza').value,
+    document.getElementById('inputDescrizioneStanza').value
+  ].join(' ');
+  const box = document.getElementById('boxControlloStanza');
+  if (!testoStanza.trim()) {
+    box.className = 'avviso-ai';
+    return [];
+  }
+  const vietate = trovaParoleVietate(testoStanza);
+  if (vietate.length > 0) {
+    box.className = 'avviso-ai allerta';
+    box.textContent = 'Controllo linguaggio: rilevati termini non consentiti nel nome o nella descrizione della stanza.';
+  } else {
+    box.className = 'avviso-ai ok';
+    box.textContent = 'Controllo linguaggio: nessun termine vietato rilevato.';
+  }
+  return vietate;
+}
+
+['inputTitolo', 'inputLiv1', 'inputLiv2', 'inputLiv3'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    valutaControlloAi();
+    valutaControlloParoleArticolo();
+  });
+});
+
+['inputNomeStanza', 'inputDescrizioneStanza'].forEach(id => {
+  document.getElementById(id).addEventListener('input', valutaControlloParoleStanza);
+});
+
+async function gestisciSalvataggioArticolo(statoDestinazione = 'pubblicato') {
+  if (!stato.utenteCorrente) {
+    chiudiModali();
+    apriModaleAccount('login');
+    return;
+  }
+
+  const titolo = document.getElementById('inputTitolo').value.trim();
+  const liv1 = document.getElementById('inputLiv1').value.trim();
+  const liv2 = document.getElementById('inputLiv2').value.trim();
+  const liv3 = document.getElementById('inputLiv3').value.trim();
+
+  if (!titolo || !liv1 || !liv2 || !liv3) {
+    alert('Compila titolo e tutti e tre i livelli prima di procedere.');
+    return;
+  }
+
+  const vietate = valutaControlloParoleArticolo();
+  if (vietate.length > 0) {
+    return;
+  }
+
+  const statoFinale = normalizzaStatoArticolo(statoDestinazione);
+  const urlInserito = document.getElementById('inputImmagineUrl').value.trim();
+  const immagineFinale = urlInserito || stato.immagineArticoloDataUrl || IMMAGINE_DEFAULT;
+  const stanzaScelta = document.getElementById('inputStanzaArticolo').value;
+  const categoriaScelta = document.getElementById('inputCategoria').value || 'CRONACA';
+  const editId = document.getElementById('editArticoloId').value;
+
+  const btnPubblica = document.getElementById('btnPubblica');
+  const btnBozza = document.getElementById('btnSalvaBozza');
+  btnPubblica.disabled = true;
+  btnBozza.disabled = true;
+  btnPubblica.textContent = 'Salvataggio...';
+
+  if (editId) {
+    const idxEsistente = stato.articoli.findIndex(a => String(a.id) === String(editId));
+    if (idxEsistente >= 0) {
+      const corrente = stato.articoli[idxEsistente];
+      const aggiornato = {
+        ...corrente,
+        categoria: categoriaScelta,
+        stanza_nome: stanzaScelta,
+        immagine: immagineFinale,
+        titolo,
+        livello1: liv1,
+        livello2: liv2,
+        livello3: liv3,
+        stato_articolo: statoFinale,
+        letture: statoFinale === 'pubblicato' && (Number(corrente.letture) || 0) === 0 ? 1 : (Number(corrente.letture) || 0),
+        letture_oggi: statoFinale === 'pubblicato' && (Number(corrente.letture_oggi) || 0) === 0 ? 1 : (Number(corrente.letture_oggi) || 0),
+        letture_7g: statoFinale === 'pubblicato' && (Number(corrente.letture_7g) || 0) === 0 ? 1 : (Number(corrente.letture_7g) || 0),
+        letture_30g: statoFinale === 'pubblicato' && (Number(corrente.letture_30g) || 0) === 0 ? 1 : (Number(corrente.letture_30g) || 0)
+      };
+      await BackendSupabase.aggiornaArticolo(corrente.id, {
+        categoria: aggiornato.categoria,
+        stanza_nome: aggiornato.stanza_nome,
+        immagine: aggiornato.immagine,
+        titolo: aggiornato.titolo,
+        livello1: aggiornato.livello1,
+        livello2: aggiornato.livello2,
+        livello3: aggiornato.livello3,
+        stato_articolo: aggiornato.stato_articolo,
+        letture: aggiornato.letture,
+        letture_oggi: aggiornato.letture_oggi,
+        letture_7g: aggiornato.letture_7g,
+        letture_30g: aggiornato.letture_30g
+      });
+      stato.articoli[idxEsistente] = aggiornato;
+    }
+  } else {
+    const creato = await BackendSupabase.creaArticolo({
+      categoria: categoriaScelta,
+      stanza_nome: stanzaScelta,
+      autore: stato.utenteCorrente.username,
+      autore_username: stato.utenteCorrente.username,
+      immagine: immagineFinale,
+      titolo,
+      livello1: liv1,
+      livello2: liv2,
+      livello3: liv3,
+      stato_articolo: statoFinale
+    });
+    stato.articoli.unshift(creato);
+  }
+
+  salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+  document.getElementById('editArticoloId').value = '';
+  stato.immagineArticoloDataUrl = '';
+  document.getElementById('dropzoneImg').textContent = 'Trascina qui un\'immagine o tocca per sceglierla dal dispositivo';
+  document.getElementById('formArticolo').reset();
+  document.getElementById('boxControlloAi').className = 'avviso-ai';
+  document.getElementById('boxControlloParole').className = 'avviso-ai';
+
+  btnPubblica.disabled = false;
+  btnBozza.disabled = false;
+  btnPubblica.textContent = 'Pubblica sul giornale';
+  chiudiModali();
+
+  if (statoFinale === 'bozza') {
+    apriProfiloUtente(stato.utenteCorrente.username, 'bozze');
+  } else {
+    stato.stanzaAttiva = stanzaScelta || '';
+    stato.categoriaAttiva = 'TUTTI';
+    stato.indiceArticolo = 0;
+    stato.stepApprofondimento = 1;
+    renderCategorie();
+    renderArticolo(false);
+    if (stato.queryRicerca) renderRisultatiRicerca();
+  }
+}
+
+document.getElementById('formArticolo').addEventListener('submit', async e => {
+  e.preventDefault();
+  await gestisciSalvataggioArticolo('pubblicato');
+});
+
+document.getElementById('formStanza').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!stato.utenteCorrente) {
+    chiudiModali();
+    apriModaleAccount('login');
+    return;
+  }
+
+  if (valutaControlloParoleStanza().length > 0) {
+    return;
+  }
+
+  const nomeStanza = document.getElementById('inputNomeStanza').value.trim();
+  const passwordStanza = document.getElementById('inputPasswordStanza').value;
+  if (!nomeStanza) return;
+
+  const urlStanza = document.getElementById('inputImmagineStanzaUrl').value.trim();
+  const immagineStanza = urlStanza || stato.immagineStanzaDataUrl || IMMAGINE_DEFAULT;
+
+  const btnCrea = document.getElementById('btnCreaStanza');
+  btnCrea.disabled = true;
+  btnCrea.textContent = 'Creazione...';
+
+  const creata = await BackendSupabase.creaStanza({
+    nome: nomeStanza,
+    password_stanza: passwordStanza,
+    creata_da: `@${stato.utenteCorrente.username}`,
+    descrizione: document.getElementById('inputDescrizioneStanza').value,
+    immagine: immagineStanza
+  });
+
+  stato.stanze.unshift(creata);
+  if (!stato.stanzeSbloccate.includes(creata.nome)) {
+    stato.stanzeSbloccate.push(creata.nome);
+    salvaStanzeSbloccate(stato.stanzeSbloccate);
+  }
+  salvaCacheLocale(stato.articoli, stato.categorie, stato.stanze, stato.utenti);
+
+  stato.immagineStanzaDataUrl = '';
+  document.getElementById('dropzoneStanzaImg').textContent = 'Trascina qui un\'immagine per la stanza o tocca per sceglierla';
+  document.getElementById('boxControlloStanza').className = 'avviso-ai';
+  e.target.reset();
+
+  btnCrea.disabled = false;
+  btnCrea.textContent = 'Crea stanza';
+  chiudiModali();
+  await entraInStanza(creata);
+  if (stato.queryRicerca) renderRisultatiRicerca();
+});
+
+// ======================================================
+// 6. AVVIO INIZIALE
+// ======================================================
+(async function avviaIceberg() {
+  aggiornaBottoneAccount();
+  const dati = await BackendSupabase.caricaTutto();
+  stato.articoli = dati.articoli;
+  stato.categorie = filtraCategorieSenzaCultura(dati.categorie);
+  stato.stanze = dati.stanze;
+  stato.utenti = dati.utenti;
+  document.getElementById('statoSync').textContent = dati.stato;
+  renderCategorie();
+  await renderArticolo(true);
+})();
+</script>
+</body>
+</html>
